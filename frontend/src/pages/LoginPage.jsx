@@ -1,4 +1,39 @@
+import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { useLoginMutation } from "../slices/userApiSlice";
+import { setCredentials } from "../slices/authSlice";
+import { toast } from "react-toastify";
+import Spinner from "../components/Spinner";
+
 const LoginPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const [login, { isLoading }] = useLoginMutation();
+
+  const { userInfo } = useSelector((state) => state.auth);
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate("/home");
+    }
+  }, [navigate, userInfo]);
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await login({ email, password }).unwrap();
+      console.log(res);
+      dispatch(setCredentials({ ...res }));
+      navigate("/home");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
   return (
     <section className="bg-light py-3 py-md-5">
       <div className="container">
@@ -9,7 +44,7 @@ const LoginPage = () => {
                 <h2 className="fs-6 fw-normal text-center text-secondary mb-4">
                   Sign in to your account
                 </h2>
-                <form action="#!">
+                <form onSubmit={submitHandler}>
                   <div className="row gy-2 overflow-hidden">
                     <div className="col-12">
                       <div className="form-floating mb-3">
@@ -18,6 +53,8 @@ const LoginPage = () => {
                           className="form-control"
                           name="email"
                           id="email"
+                          value={email}
+                          onChange={(e) => setEmail(e.target.value)}
                           placeholder="name@example.com"
                           required
                         />
@@ -33,7 +70,8 @@ const LoginPage = () => {
                           className="form-control"
                           name="password"
                           id="password"
-                          value=""
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
                           placeholder="Password"
                           required
                         />
@@ -42,7 +80,7 @@ const LoginPage = () => {
                         </label>
                       </div>
                     </div>
-
+                    {isLoading && <Spinner />}
                     <div className="col-12">
                       <div className="d-grid my-3">
                         <button
@@ -53,17 +91,6 @@ const LoginPage = () => {
                         </button>
                       </div>
                     </div>
-                    <div className="col-12">
-                      <p className="m-0 text-secondary text-center">
-                        Dont have an account?{" "}
-                        <a
-                          href="#!"
-                          className="link-primary text-decoration-none"
-                        >
-                          Sign up
-                        </a>
-                      </p>
-                    </div>
                   </div>
                 </form>
               </div>
@@ -72,7 +99,7 @@ const LoginPage = () => {
         </div>
       </div>
     </section>
-  )
-}
+  );
+};
 
-export default LoginPage
+export default LoginPage;
