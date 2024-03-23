@@ -1,12 +1,31 @@
 import asyncHandler from "express-async-handler"
 import prisma from "../db.js"
-import { hashPassword } from "../utils/auth.js"
+import { comparePasswords, createJWT, hashPassword } from "../utils/auth.js"
 
 // @desc  Auth user/set token
 // route  POST /api/users/auth
 // @access Public
 const authUser = asyncHandler(async (req, res) => {
-  res.status(200).send("AUTH USER")
+  const { email, password } = req.body
+
+  const user = await prisma.user.findUnique({
+    where: {
+      email,
+    },
+  })
+
+  if (user && (await comparePasswords(password, user.password))) {
+    console.log("yes")
+    createJWT(user.id, res)
+    res.status(201).json({
+      id: user.id,
+      name: user.name,
+      email: user.email,
+    })
+  } else {
+    res.status(401)
+    throw new Error("Invalid email or password")
+  }
 })
 
 // @desc Register a new user
@@ -32,6 +51,7 @@ const registerUser = asyncHandler(async (req, res) => {
     },
   })
   if (user) {
+    createJWT(user.id, res)
     res.status(201).json({
       id: user.id,
       email: user.email,
@@ -46,14 +66,23 @@ const registerUser = asyncHandler(async (req, res) => {
 // route  POST /api/users/logout
 // @access Public
 const logoutUser = asyncHandler(async (req, res) => {
-  res.send("LOGOUT USER")
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    expires: new Date(0),
+  })
+  res.status(200).json({ data: "User logged out" })
 })
 
 // @desc  Get user profile
 // route  GET /api/users/profile
 // @access Private
 const getUserProfile = asyncHandler(async (req, res) => {
-  res.send("USER PROFILE")
+  const user = {
+    id: req.user.id,
+    name: req.user.name,
+    email: req.user.email,
+  }
+  res.status(200).json(user)
 })
 
 // @desc  Update user profile

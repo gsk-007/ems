@@ -10,7 +10,7 @@ export const hashPassword = async (password) => {
   return bcrypt.hash(password, salt)
 }
 
-export const createJWT = (id) => {
+export const createJWT = (id, res) => {
   const token = jwt.sign({ id }, process.env.JWT_SECRET, {
     expiresIn: "1d",
   })
