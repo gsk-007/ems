@@ -22,7 +22,7 @@ import HomePage from "./pages/HomePage.jsx";
 import AttendencePage from "./pages/AttendencePage.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="" element={<App />}>
       <Route path="" element={<PrivateRoute />}>
         <Route path="home" element={<HomePage />} />
         <Route path="home/attendence" element={<AttendencePage />} />

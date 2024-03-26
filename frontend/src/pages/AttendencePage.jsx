@@ -1,10 +1,12 @@
-import React from "react";
+import TimeComponent from "../components/TimeComponent";
 import HomePageLayout from "../layouts/HomePageLayout";
 
 const AttendencePage = () => {
   return (
     <HomePageLayout>
-      <div>Attendence</div>
+      <div className="mx-2">
+        <TimeComponent />
+      </div>
     </HomePageLayout>
   );
 };
