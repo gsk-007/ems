@@ -88,9 +88,6 @@ const ProfilePage = () => {
               <div key={idx}>
                 <h4>{item.title}</h4>
                 <p>
-                  <strong>Authors:</strong> {item.authors.join(", ")}
-                </p>
-                <p>
                   <strong>Journal:</strong> {item.journal}
                 </p>
                 <p>
