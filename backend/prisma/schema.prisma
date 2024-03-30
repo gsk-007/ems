@@ -17,14 +17,42 @@ model User {
   id        String      @id @default(uuid())
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  name      String?
+  name      String    @default("User")
   email     String   @unique
   password  String
-  Phone     String?
+  phone     String?
   role      Role     @default(USER)
+  qualifications Json?
+  employmentHistory Json?
+  about String?
+  attendance Attendance[]
+  departmentId Int?
+  department Department? @relation(fields: [departmentId],references: [id])
 }
 
 enum Role {
   USER
   ADMIN
+}
+
+model Attendance {
+  id String @id @default(uuid())
+  userId String
+  status AttendanceStatus 
+  date DateTime
+  time_in DateTime?
+  time_out DateTime?
+  user User @relation(fields: [userId], references: [id])
+}
+
+enum AttendanceStatus{
+  PRESENT
+  ABSENT
+  LEAVE
+}
+
+model Department {
+  id Int @id @default(autoincrement())
+  deparmentName String
+  user User[]
 }

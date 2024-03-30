@@ -17,12 +17,8 @@ const authUser = asyncHandler(async (req, res) => {
   if (user && (await comparePasswords(password, user.password))) {
     console.log("yes");
     createJWT(user.id, res);
-    res.status(201).json({
-      id: user.id,
-      name: user.name,
-      email: user.email,
-      role: user.role,
-    });
+    delete user.password;
+    res.status(201).json(user);
   } else {
     res.status(401);
     throw new Error("Invalid email or password");
