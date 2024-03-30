@@ -22,12 +22,14 @@ import HomePage from "./pages/HomePage.jsx";
 import AttendencePage from "./pages/AttendencePage.jsx";
 import ProfilePage from "./pages/ProfilePage.jsx";
 import CreateUserPage from "./pages/CreateUserPage.jsx";
+import EditProfilePage from "./pages/EditProfilePage.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="" element={<App />}>
       <Route path="" element={<PrivateRoute />}>
         <Route path="home" element={<HomePage />} />
         <Route path="profile" element={<ProfilePage />} />
+        <Route path="profile/edit" element={<EditProfilePage />} />
         <Route path="home/attendence" element={<AttendencePage />} />
         <Route path="home/create-user" element={<CreateUserPage />} />
       </Route>
