@@ -1,6 +1,7 @@
 import React from "react";
 
-const EditUserProfile = () => {
+const EditUserProfile = ({ user }) => {
+  console.log(user);
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("submit");
@@ -38,7 +39,21 @@ const EditUserProfile = () => {
           <label htmlFor="about" className="form-label">
             About
           </label>
-          <input type="text" className="form-control" placeholder="About" />
+          <textarea type="text" className="form-control" placeholder="About" />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="qulaification" className="form-label">
+            Qualifications
+          </label>
+          <div className="d-flex ">
+            {user.qualifications.map((item, idx) => (
+              <div key={idx} className="card mx-1">
+                <div className="card-body">
+                  {item.degree} ({item.graduation_year})
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </form>
     </div>

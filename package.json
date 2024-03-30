@@ -29,7 +29,8 @@
     "express": "^4.18.3",
     "express-async-handler": "^1.2.0",
     "jsonwebtoken": "^9.0.2",
-    "morgan": "^1.10.0"
+    "morgan": "^1.10.0",
+    "react-icons": "^5.0.1"
   },
   "prisma": {
     "schema": "backend/prisma/schema.prisma"

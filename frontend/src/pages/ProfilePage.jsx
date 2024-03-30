@@ -4,8 +4,7 @@ import { useState } from "react";
 import EditUserProfile from "../components/EditUserProfile";
 const ProfilePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const [editMode, setEditMode] = useState(false);
-  console.log(userInfo);
+  const [editMode, setEditMode] = useState(true);
   const qualifications = [
     {
       degree: "Bachelor of Science",
@@ -20,6 +19,7 @@ const ProfilePage = () => {
       graduation_year: 2024,
     },
   ];
+
   const samplePublication = [
     {
       title: "Sample Publication Title",
@@ -116,7 +116,11 @@ const ProfilePage = () => {
           </div>
         </div>
         {/* Edit Mode Start Here */}
-        {editMode && <EditUserProfile />}
+        {editMode && (
+          <EditUserProfile
+            user={{ userInfo, qualifications, samplePublication }}
+          />
+        )}
       </div>
     </NormalLayout>
   );
