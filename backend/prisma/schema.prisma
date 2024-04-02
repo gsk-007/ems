@@ -49,6 +49,7 @@ enum AttendanceStatus{
   PRESENT
   ABSENT
   LEAVE
+  HOLIDAY
 }
 
 model Department {
