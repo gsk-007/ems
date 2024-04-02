@@ -104,6 +104,9 @@ const ProfilePage = () => {
           <Link to="/profile/edit">
             <button className="  btn btn-primary">Edit Details</button>
           </Link>
+          <Link to="/profile/editpassword">
+            <button className="ms-2  btn btn-primary">Change Password</button>
+          </Link>
         </div>
       </div>
     </NormalLayout>
