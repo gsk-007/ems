@@ -24,6 +24,7 @@ import ProfilePage from "./pages/ProfilePage.jsx";
 import CreateUserPage from "./pages/CreateUserPage.jsx";
 import EditProfilePage from "./pages/EditProfilePage.jsx";
 import EditPasswordPage from "./pages/EditPasswordPage.jsx";
+import ManageUsersPage from "./pages/ManageUsersPage.jsx";
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="" element={<App />}>
@@ -34,6 +35,7 @@ const router = createBrowserRouter(
         <Route path="profile/editpassword" element={<EditPasswordPage />} />
         <Route path="home/attendence" element={<AttendencePage />} />
         <Route path="home/create-user" element={<CreateUserPage />} />
+        <Route path="home/manage-user" element={<ManageUsersPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
     </Route>

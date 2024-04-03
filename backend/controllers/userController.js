@@ -59,7 +59,7 @@ const registerUser = asyncHandler(async (req, res) => {
   }
 });
 
-// @desc  Logout suer
+// @desc  Logout user
 // route  POST /api/users/logout
 // @access Public
 const logoutUser = asyncHandler(async (req, res) => {
@@ -70,6 +70,22 @@ const logoutUser = asyncHandler(async (req, res) => {
   res.status(200).json({ data: "User logged out" });
 });
 
+// @desc  Get all users
+// route  GET /api/users/
+// @access Private admin
+const getAllUsers = asyncHandler(async (req, res) => {
+  const users = await prisma.user.findMany({
+    where: {
+      role: "USER",
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+    },
+  });
+  res.status(200).json(users);
+});
 // @desc  Get user profile
 // route  GET /api/users/profile
 // @access Private
@@ -79,6 +95,24 @@ const getUserProfile = asyncHandler(async (req, res) => {
     name: req.user.name,
     email: req.user.email,
   };
+  res.status(200).json(user);
+});
+
+// @desc  Get user profile by id
+// route  GET /api/users/profile/:id
+// @access Private
+const getUserProfileById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  console.log(id);
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+  delete user.password;
+  if (!user) {
+    throw new Error("User Doesn't Exist");
+  }
   res.status(200).json(user);
 });
 
@@ -95,4 +129,6 @@ export {
   logoutUser,
   getUserProfile,
   updateUserProfile,
+  getAllUsers,
+  getUserProfileById,
 };

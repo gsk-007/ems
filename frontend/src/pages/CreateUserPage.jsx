@@ -60,6 +60,17 @@ const CreateUserPage = () => {
             <option value="ADMIN">Admin</option>
           </select>
         </div>
+        <div className="mb-3">
+          <label className="form-label" htmlFor="Role">
+            Department
+          </label>
+          <select className="form-select" aria-label="Default select example">
+            <option selected>Select Department</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
         <div className="w-25 mx-auto">
           <button className="btn btn-success" type="submit">
             Submit
