@@ -22,12 +22,18 @@ model User {
   password  String
   phone     String?
   role      Role     @default(USER)
+  type      UserType?
   qualifications Json?
   employmentHistory Json?
   about String?
   attendance Attendance[]
   departmentId Int?
   department Department? @relation(fields: [departmentId],references: [id])
+}
+
+enum UserType{
+  TEACHING
+  NONTEACHING
 }
 
 enum Role {
