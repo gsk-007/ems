@@ -20,6 +20,7 @@ router
   .route("/profile")
   .get(protect, getUserProfile)
   .put(protect, updateUserProfile);
+
 router.route("/:id").get(getUserProfileById);
 
 export default router;

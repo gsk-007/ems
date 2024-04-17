@@ -39,6 +39,17 @@ const registerUser = asyncHandler(async (req, res) => {
     res.status(400);
     throw new Error("User Already exists");
   }
+  if (role === "ADMIN") {
+    const adminCount = await prisma.user.count({
+      where: {
+        role: "ADMIN",
+      },
+    });
+    if (adminCount === 2) {
+      res.status(400);
+      throw new Error("Admin Registration Closed");
+    }
+  }
   const hashedPassword = await hashPassword(password);
   const user = await prisma.user.create({
     data: {

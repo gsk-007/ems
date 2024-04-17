@@ -28,6 +28,7 @@ model User {
   about String?
   attendance Attendance[]
   departmentId Int?
+  isApproved Boolean? @default(false)
   department Department? @relation(fields: [departmentId],references: [id])
 }
 
