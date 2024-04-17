@@ -32,7 +32,7 @@ const UserRegisterPage = () => {
         const res = await register({ email, password, role: "USER" }).unwrap();
         console.log(res);
         dispatch(setCredentials({ ...res }));
-        navigate("/home");
+        navigate(`/${userInfo.role === "ADMIN" ? "admin" : "user"}/home`);
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }

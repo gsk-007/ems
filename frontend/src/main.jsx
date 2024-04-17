@@ -35,12 +35,13 @@ const router = createBrowserRouter(
         <Route path="new-user" element={<NewUserScreen />} />
       </Route>
       <Route path="/user" element={<PrivateRoute role="USER" />}>
-      <Route path="home" element={<HomePage />} />
+        <Route path="home" element={<HomePage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/edit" element={<EditProfilePage />} />
         <Route path="profile/editpassword" element={<EditPassword />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/" element={<LoginPage />} />
       <Route path="/register" element={<UserRegisterPage />} />
     </Route>
   )

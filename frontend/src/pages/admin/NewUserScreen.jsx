@@ -1,28 +1,46 @@
 import React, { useEffect, useState } from "react";
 import HomePageLayout from "../../layouts/HomePageLayout";
-import { useGetAllUsersMutation } from "../../slices/userApiSlice";
+import {
+  useGetAllUsersMutation,
+  useUpdateUserByIdMutation,
+} from "../../slices/userApiSlice";
 import Spinner from "../../components/Spinner";
+import { toast } from "react-toastify";
 
 const NewUserScreen = () => {
   const [data, setData] = useState([]);
   const [getAllUsers, { isLoading }] = useGetAllUsersMutation();
+  const [updateUser, { isLoading: isProfileUpdateLoading }] =
+    useUpdateUserByIdMutation();
 
   useEffect(() => {
     getAllUsers()
       .unwrap()
       .then((data) => {
         setData(data);
-        console.log(data);
       });
   }, [getAllUsers]);
 
-  const handleApprove = () => {};
+  const handleApprove = async (id) => {
+    try {
+      const res = await updateUser({ id, isApproved: true }).unwrap();
+      toast.success("User Approved");
+      getAllUsers()
+        .unwrap()
+        .then((data) => {
+          setData(data);
+        });
+      dispatch(setCredentials({ ...res }));
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
 
   const handleReject = () => {};
 
   return (
     <HomePageLayout>
-      {isLoading ? (
+      {isLoading || isProfileUpdateLoading ? (
         <Spinner />
       ) : (
         <div className="w-100">
@@ -42,9 +60,9 @@ const NewUserScreen = () => {
                 <tr key={idx}>
                   <td>{item.name}</td>
                   <td>{item.email}</td>
-                  <td colspan="2">
+                  <td colSpan="2">
                     <button
-                      onClick={handleApprove}
+                      onClick={() => handleApprove(item.id)}
                       className="btn btn-sm btn-success me-2"
                     >
                       Approve

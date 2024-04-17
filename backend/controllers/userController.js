@@ -15,7 +15,6 @@ const authUser = asyncHandler(async (req, res) => {
   });
 
   if (user && (await comparePasswords(password, user.password))) {
-    console.log("yes");
     createJWT(user.id, res);
     delete user.password;
     res.status(201).json(user);
@@ -85,21 +84,16 @@ const logoutUser = asyncHandler(async (req, res) => {
 // route  GET /api/users/
 // @access Private admin
 const getAllUsers = asyncHandler(async (req, res) => {
-  console.log(req.query)
-  const searchQuery = {
-    role: "USER",
-
-  }
   const users = await prisma.user.findMany({
     where: {
       role: "USER",
-      isApproved:false
+      isApproved: false,
     },
     select: {
       id: true,
       name: true,
       email: true,
-      department:true
+      department: true,
     },
   });
   res.status(200).json(users);
@@ -116,29 +110,52 @@ const getUserProfile = asyncHandler(async (req, res) => {
   res.status(200).json(user);
 });
 
+// @desc  Update user profile
+// route  PUT /api/users/profile
+// @access Private
+const updateUserProfile = asyncHandler(async (req, res) => {
+  const data = req.body;
+  res.send("UPDATE USER PROFILE");
+});
+
 // @desc  Get user profile by id
-// route  GET /api/users/profile/:id
+// route  GET /api/users/:id
 // @access Private
 const getUserProfileById = asyncHandler(async (req, res) => {
   const { id } = req.params;
-  console.log(id);
   const user = await prisma.user.findUnique({
     where: {
       id,
     },
   });
-  delete user.password;
   if (!user) {
     throw new Error("User Doesn't Exist");
   }
+  delete user.password;
   res.status(200).json(user);
 });
 
-// @desc  Update user profile
-// route  PUT /api/users/profile
-// @access Private
-const updateUserProfile = asyncHandler(async (req, res) => {
-  res.send("UPDATE USER PROFILE");
+// @desc  Update user profile by id
+// route  GET /api/users/:id
+// @access Private Admin
+const updateUserProfileById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User Doesn't Exist");
+  }
+
+  const updatedUser = await prisma.user.update({
+    where: { id },
+    data: req.body,
+  });
+
+  res.status(200).json(updatedUser);
 });
 
 export {
@@ -149,4 +166,5 @@ export {
   updateUserProfile,
   getAllUsers,
   getUserProfileById,
+  updateUserProfileById,
 };
