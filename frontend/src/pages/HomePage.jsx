@@ -1,7 +1,11 @@
 import { Link } from "react-router-dom";
 import HomePageLayout from "../layouts/HomePageLayout";
+import { useSelector } from "react-redux";
+import NormalLayout from "../layouts/NormalLayout";
+import NotApproved from "../components/NotApproved";
 
 const HomePage = () => {
+  const { userInfo } = useSelector((state) => state.auth);
   const cardContent = [
     {
       cardTitle: "Attendance",
@@ -19,7 +23,8 @@ const HomePage = () => {
       url: "#",
     },
   ];
-  return (
+
+  return userInfo.isApproved ? (
     <HomePageLayout>
       <div className="mx-2 row">
         {cardContent.map((card, idx) => (
@@ -35,6 +40,10 @@ const HomePage = () => {
         ))}
       </div>
     </HomePageLayout>
+  ) : (
+    <NormalLayout>
+      <NotApproved />
+    </NormalLayout>
   );
 };
 
