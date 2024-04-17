@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
-import NormalLayout from "../layouts/NormalLayout";
-import { useGetAllUsersMutation } from "../slices/userApiSlice";
+import NormalLayout from "../../layouts/NormalLayout";
+import { useGetAllUsersMutation } from "../../slices/userApiSlice";
 import DataTable from "react-data-table-component";
 
 const ManageUsersPage = () => {

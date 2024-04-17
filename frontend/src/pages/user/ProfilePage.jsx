@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import NormalLayout from "../layouts/NormalLayout";
+import NormalLayout from "../../layouts/NormalLayout";
 import { Link } from "react-router-dom";
 
 const ProfilePage = () => {

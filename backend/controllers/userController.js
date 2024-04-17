@@ -85,14 +85,21 @@ const logoutUser = asyncHandler(async (req, res) => {
 // route  GET /api/users/
 // @access Private admin
 const getAllUsers = asyncHandler(async (req, res) => {
+  console.log(req.query)
+  const searchQuery = {
+    role: "USER",
+
+  }
   const users = await prisma.user.findMany({
     where: {
       role: "USER",
+      isApproved:false
     },
     select: {
       id: true,
       name: true,
       email: true,
+      department:true
     },
   });
   res.status(200).json(users);

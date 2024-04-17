@@ -31,7 +31,7 @@ export const usersApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     getAllUsers: builder.mutation({
-      query: () => ({
+      query: (data) => ({
         url: `${USERS_URL}`,
         method: "GET",
       }),

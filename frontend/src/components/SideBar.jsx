@@ -5,8 +5,7 @@ const SideBar = () => {
     {
       title: "User",
       tabs: [
-        { title: "Create User", url: "/home/create-user" },
-        { title: "Manage Users", url: "/home/manage-user" },
+        { title: "View New User Requests", url: "/admin/new-user" },
       ],
     },
   ];

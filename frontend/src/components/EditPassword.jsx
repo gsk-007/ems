@@ -1,6 +1,6 @@
 import NormalLayout from "../layouts/NormalLayout";
 
-const EditPasswordPage = () => {
+const EditPassword = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("submit");
@@ -38,4 +38,4 @@ const EditPasswordPage = () => {
   );
 };
 
-export default EditPasswordPage;
+export default EditPassword;

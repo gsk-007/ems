@@ -19,7 +19,8 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+     
+      navigate(`/${userInfo.role ==="ADMIN"?'admin':'user'}/home`);
     }
   }, [navigate, userInfo]);
 

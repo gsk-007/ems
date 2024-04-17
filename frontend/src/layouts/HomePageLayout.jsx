@@ -2,6 +2,7 @@ import Header from "../components/Header";
 import SideBar from "../components/SideBar";
 
 const HomePageLayout = ({ children }) => {
+  const asideWidth = 300;
   return (
     <>
       <div style={{ height: "70px" }}>
@@ -10,11 +11,13 @@ const HomePageLayout = ({ children }) => {
       <div style={{ height: `calc(100vh - 70px)` }} className="d-flex">
         <aside
           className="h-100% border-end border-black"
-          style={{ width: "300px" }}
+          style={{ width: `${asideWidth}px` }}
         >
           <SideBar />
         </aside>
-        <div className="mt-2">{children}</div>
+        <div style={{ width: `calc(100% - ${asideWidth}px)` }} className="mt-2">
+          {children}
+        </div>
       </div>
     </>
   );

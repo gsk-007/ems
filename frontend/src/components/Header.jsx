@@ -37,7 +37,7 @@ const Header = () => {
         <div className="collapse navbar-collapse ms-4" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to="/home">
+              <Link className="nav-link active" aria-current="page" to={`/${userInfo.role ==="ADMIN"?'admin':'user'}/home`}>
                 Home
               </Link>
             </li>
