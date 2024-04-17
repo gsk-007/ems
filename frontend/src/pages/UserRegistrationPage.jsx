@@ -116,7 +116,7 @@ const UserRegisterPage = () => {
                 </form>
                 <div>
                   <div>
-                    Already Have An Account? <Link to={`/login`}>Sign In</Link>
+                    Already Have An Account? <Link to="/login">Sign In</Link>
                   </div>
                 </div>
               </div>

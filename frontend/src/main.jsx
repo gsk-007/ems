@@ -28,7 +28,7 @@ import UserRegisterPage from "./pages/UserRegistrationPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="" element={<App />}>
+    <Route path="/" element={<App />}>
       <Route path="" element={<PrivateRoute />}>
         <Route path="home" element={<HomePage />} />
         <Route path="profile" element={<ProfilePage />} />

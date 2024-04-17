@@ -24,7 +24,7 @@ const HomePage = () => {
     },
   ];
 
-  return userInfo.isApproved ? (
+  return (userInfo.isApproved || userInfo.role ==='ADMIN') ? (
     <HomePageLayout>
       <div className="mx-2 row">
         {cardContent.map((card, idx) => (
