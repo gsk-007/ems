@@ -4,35 +4,28 @@ import prisma from "../db.js";
 // @desc  Create new attendance record
 // route  POST /api/attendance
 // @access Private
-const createAttendance = asyncHandler((req, res) => {
-  res.send("Create Attendance Handler");
+const createAttendance = asyncHandler(async (req, res) => {
+  const { status } = req.body;
+  const newAttendance = await prisma.attendance.create({
+    data: {
+      userId: req.user.id,
+      status,
+    },
+  });
+  res.status(201).json({ data: "Attendance Created" });
 });
 
 // @desc  Create new attendance record
 // route  get /api/attendance
 // @access Private
-const getCurrentUserAttendance = asyncHandler((req, res) => {
-  // using request object
-  res.send("Create Attendance Handler");
+const getCurrentUserAttendance = asyncHandler(async (req, res) => {
+  const attendance = await prisma.attendance.findMany({
+    where: {
+      userId: req.user.id,
+    },
+  });
+
+  res.status(200).json(attendance);
 });
 
-// @desc  Get Attendance of a User
-// route  GET /api/attendance/:userId
-// @access Private Admin
-const getUserAttendanceById = asyncHandler((req, res) => {
-  res.send("Get User Attendance");
-});
-
-// @desc  Update Attendance of a User
-// route  PUT /api/attendance/:attendanceId
-// @access Private
-const updateUserAttendance = asyncHandler((req, res) => {
-  res.send("Update User Attendance");
-});
-
-export {
-  createAttendance,
-  getUserAttendanceById,
-  updateUserAttendance,
-  getCurrentUserAttendance,
-};
+export { createAttendance, getCurrentUserAttendance };

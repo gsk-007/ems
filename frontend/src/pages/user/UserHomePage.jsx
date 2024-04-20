@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import HomePageLayout from "../layouts/HomePageLayout";
 import { useSelector } from "react-redux";
-import NormalLayout from "../layouts/NormalLayout";
-import NotApproved from "../components/NotApproved";
+import HomePageLayout from "../../layouts/HomePageLayout";
+import NotApproved from "../../components/NotApproved";
+import NormalLayout from "../../layouts/NormalLayout";
 
-const HomePage = () => {
+const UserHomePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
   const cardContent = [
     {
@@ -24,7 +24,7 @@ const HomePage = () => {
     },
   ];
 
-  return (userInfo.isApproved || userInfo.role ==='ADMIN') ? (
+  return userInfo.isApproved ? (
     <HomePageLayout>
       <div className="mx-2 row">
         {cardContent.map((card, idx) => (
@@ -47,4 +47,4 @@ const HomePage = () => {
   );
 };
 
-export default HomePage;
+export default UserHomePage;

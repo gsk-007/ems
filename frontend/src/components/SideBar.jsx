@@ -1,16 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import {useSelector} from 'react-redux'
+import { useSelector } from "react-redux";
 
 const SideBar = () => {
-  const [sideBarOptions, setSideBarOptions] = useState([])
-  const {userInfo} = useSelector(state => state.auth)
+  const [sideBarOptions, setSideBarOptions] = useState([]);
+  const { userInfo } = useSelector((state) => state.auth);
   const adminSideBarOptions = [
     {
       title: "User",
-      tabs: [
-        { title: "View New User Requests", url: "/admin/new-user" },
-      ],
+      tabs: [{ title: "View New User Requests", url: "/admin/new-user" }],
     },
   ];
   const userSideBarOptions = [
@@ -18,15 +16,22 @@ const SideBar = () => {
       title: "Leave",
       tabs: [
         { title: "Leave Apply", url: "/user/leave/apply" },
+        { title: "Leave status", url: "/user/leave/status" },
         { title: "Leave Balance", url: "#" },
         { title: "Holiday Calendar", url: "#" },
       ],
     },
+    {
+      title: "Attendance",
+      tabs: [{ title: "Attendance Info", url: "/user/attendance" }],
+    },
   ];
 
-  useEffect(()=>{
-    setSideBarOptions(userInfo.role === 'ADMIN' ? adminSideBarOptions : userSideBarOptions)
-  },[])
+  useEffect(() => {
+    setSideBarOptions(
+      userInfo.role === "ADMIN" ? adminSideBarOptions : userSideBarOptions
+    );
+  }, []);
 
   return (
     <div className="h-100">

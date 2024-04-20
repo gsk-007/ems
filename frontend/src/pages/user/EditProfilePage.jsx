@@ -1,4 +1,4 @@
-import NormalLayout from "../layouts/NormalLayout";
+import NormalLayout from "../../layouts/NormalLayout";
 import { FaPenToSquare, FaTrash, FaPlus } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 

@@ -2,15 +2,13 @@ import express from "express";
 import {
   createAttendance,
   getCurrentUserAttendance,
-  getUserAttendanceById,
-  updateUserAttendance,
 } from "../controllers/attendanceController.js";
+
+import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.post("/", createAttendance);
-router.put("/", updateUserAttendance);
-router.get("/", getCurrentUserAttendance);
-router.get("/:id", getUserAttendanceById);
+router.get("/", protect, getCurrentUserAttendance);
+router.post("/", protect, createAttendance);
 
 export default router;

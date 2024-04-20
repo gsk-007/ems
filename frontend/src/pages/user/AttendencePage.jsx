@@ -1,5 +1,5 @@
-import TimeComponent from "../components/TimeComponent";
-import HomePageLayout from "../layouts/HomePageLayout";
+import TimeComponent from "../../components/TimeComponent";
+import HomePageLayout from "../../layouts/HomePageLayout";
 
 const AttendencePage = () => {
   return (
