@@ -1,7 +1,11 @@
+import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import {useSelector} from 'react-redux'
 
 const SideBar = () => {
-  const sideBarOptions = [
+  const [sideBarOptions, setSideBarOptions] = useState([])
+  const {userInfo} = useSelector(state => state.auth)
+  const adminSideBarOptions = [
     {
       title: "User",
       tabs: [
@@ -9,6 +13,21 @@ const SideBar = () => {
       ],
     },
   ];
+  const userSideBarOptions = [
+    {
+      title: "Leave",
+      tabs: [
+        { title: "Leave Apply", url: "/user/leave/apply" },
+        { title: "Leave Balance", url: "#" },
+        { title: "Holiday Calendar", url: "#" },
+      ],
+    },
+  ];
+
+  useEffect(()=>{
+    setSideBarOptions(userInfo.role === 'ADMIN' ? adminSideBarOptions : userSideBarOptions)
+  },[])
+
   return (
     <div className="h-100">
       <div className="h-25 border border-primary">Top Section</div>

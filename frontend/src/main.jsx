@@ -25,6 +25,7 @@ import EditProfilePage from "./pages/EditProfilePage.jsx";
 import EditPassword from "./components/EditPassword.jsx";
 import UserRegisterPage from "./pages/UserRegistrationPage.jsx";
 import NewUserScreen from "./pages/admin/NewUserScreen.jsx";
+import LeaveApplyPage from "./pages/user/LeaveApplyPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +40,7 @@ const router = createBrowserRouter(
         <Route path="profile" element={<ProfilePage />} />
         <Route path="profile/edit" element={<EditProfilePage />} />
         <Route path="profile/editpassword" element={<EditPassword />} />
+        <Route path="leave/apply" element={<LeaveApplyPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<LoginPage />} />
