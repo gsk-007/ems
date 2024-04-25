@@ -5,11 +5,13 @@ import prisma from "../db.js";
 // route  POST /api/attendance
 // @access Private
 const createAttendance = asyncHandler(async (req, res) => {
-  const { status } = req.body;
+  const { status, date } = req.body;
+  const { id } = req.params
   const newAttendance = await prisma.attendance.create({
     data: {
-      userId: req.user.id,
+      userId: id,
       status,
+      date
     },
   });
   res.status(201).json({ data: "Attendance Created" });

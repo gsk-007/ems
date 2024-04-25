@@ -14,29 +14,30 @@ datasource db {
 }
 
 model User {
-  id        String      @id @default(uuid())
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  name      String    @default("User")
-  email     String   @unique
-  password  String
-  phone     String?
-  role      Role     @default(USER)
-  type      UserType?
-  superviserId String?
-  superviser User? @relation("UserToSuperviser",fields:[superviserId],references:[id])
-  supervisingEmployees User[] @relation("UserToSuperviser")
-  qualifications Json?
-  employmentHistory Json?
-  about String?
-  attendance Attendance[]
-  departmentId Int?
-  isApproved Boolean? @default(false)
-  department Department? @relation(fields: [departmentId],references: [id])
-  leaveRequests LeaveRequests[] 
+  id                   String          @id @default(uuid())
+  createdAt            DateTime        @default(now())
+  updatedAt            DateTime        @updatedAt
+  name                 String          @default("User")
+  email                String          @unique
+  password             String
+  phone                String?
+  role                 Role            @default(USER)
+  type                 UserType?
+  superviserId         String?
+  superviser           User?           @relation("UserToSuperviser", fields: [superviserId], references: [id])
+  supervisingEmployees User[]          @relation("UserToSuperviser")
+  qualifications       Json?
+  employmentHistory    Json?
+  about                String?
+  attendance           Attendance[]
+  departmentId         Int?
+  isApproved           Boolean?        @default(false)
+  department           Department?     @relation(fields: [departmentId], references: [id])
+  leaveRequests        LeaveRequest[]
+  leaveApprovals       LeaveApproval[]
 }
 
-enum UserType{
+enum UserType {
   TEACHING
   NONTEACHING
 }
@@ -47,37 +48,50 @@ enum Role {
 }
 
 model Attendance {
-  id String @id @default(uuid())
-  userId String
-  status AttendanceStatus 
-  date DateTime
-  time_in DateTime?
+  id       String           @id @default(uuid())
+  userId   String
+  status   AttendanceStatus
+  date     String
+  time_in  DateTime?
   time_out DateTime?
-  user User @relation(fields: [userId], references: [id])
+  user     User             @relation(fields: [userId], references: [id])
+
+  @@unique([userId, date])
 }
 
-enum AttendanceStatus{
+enum AttendanceStatus {
   PRESENT
   ABSENT
   LEAVE
-  HOLIDAY
 }
 
 model Department {
-  id Int @id @default(autoincrement())
+  id            Int      @id @default(autoincrement())
   deparmentName String
-  user User[]
+  user          User[]
+  createdAt     DateTime @default(now())
 }
 
-model LeaveRequests {
-  id Int @id @default(autoincrement())
-  userId String
+model LeaveRequest {
+  id        Int            @id @default(autoincrement())
   LeaveType String
   StartDate DateTime
-  EndDate DateTime
-  status String
+  EndDate   DateTime
+  status    String
   leaveType LeaveStatus
-  user User @relation(fields: [userId],references: [id])
+  userId    String
+  user      User           @relation(fields: [userId], references: [id])
+  approval  LeaveApproval?
+  createdAt DateTime       @default(now())
+}
+
+model LeaveApproval {
+  id             Int    @id @default(autoincrement())
+  supervisorId   String
+  leaveRequestId Int    @unique
+  supervisor     User   @relation(fields: [supervisorId], references: [id])
+
+  leaveRequest LeaveRequest @relation(fields: [leaveRequestId], references: [id])
 }
 
 enum LeaveStatus {
