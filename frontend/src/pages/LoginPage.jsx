@@ -19,8 +19,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-     
-      navigate(`/${userInfo.role ==="ADMIN"?'admin':'user'}/home`);
+      navigate(`/${userInfo.role === "ADMIN" ? "admin" : "user"}/home`);
     }
   }, [navigate, userInfo]);
 
@@ -28,7 +27,6 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
-      console.log(res);
       dispatch(setCredentials({ ...res }));
       navigate("/home");
     } catch (err) {

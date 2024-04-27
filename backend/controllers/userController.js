@@ -26,7 +26,7 @@ const authUser = asyncHandler(async (req, res) => {
 
 // @desc Register a new user
 // route  POST /api/users
-// @access Private/Admin
+// @access Public
 const registerUser = asyncHandler(async (req, res) => {
   const { email, password, role } = req.body;
   const userExists = await prisma.user.findUnique({

@@ -51,7 +51,7 @@ model Attendance {
   id       String           @id @default(uuid())
   userId   String
   status   AttendanceStatus
-  date    String
+  date     DateTime         @db.Date
   time_in  DateTime?
   time_out DateTime?
   user     User             @relation(fields: [userId], references: [id])
