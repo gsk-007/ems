@@ -37,7 +37,11 @@ const Header = () => {
         <div className="collapse navbar-collapse ms-4" id="navbarNav">
           <ul className="navbar-nav">
             <li className="nav-item">
-              <Link className="nav-link active" aria-current="page" to={`/${userInfo.role ==="ADMIN"?'admin':'user'}/home`}>
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to={`/${userInfo.role === "ADMIN" ? "admin" : "user"}/home`}
+              >
                 Home
               </Link>
             </li>
@@ -55,7 +59,10 @@ const Header = () => {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <Link to="/profile" className="dropdown-item">
+              <Link
+                to={`/${userInfo.role === "ADMIN" ? "admin" : "user"}/profile`}
+                className="dropdown-item"
+              >
                 Profile
               </Link>
             </li>

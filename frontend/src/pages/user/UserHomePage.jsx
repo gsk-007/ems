@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import HomePageLayout from "../../layouts/HomePageLayout";
 import NotApproved from "../../components/NotApproved";
 import NormalLayout from "../../layouts/NormalLayout";
+import SignInComponent from "../../components/SignInComponent";
 
 const UserHomePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
@@ -38,6 +39,9 @@ const UserHomePage = () => {
             </div>
           </div>
         ))}
+      </div>
+      <div>
+        <SignInComponent />
       </div>
     </HomePageLayout>
   ) : (

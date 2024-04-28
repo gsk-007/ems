@@ -9,7 +9,15 @@ export const attendanceApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    createAttendance: builder.mutation({
+      query: (data) => ({
+        url: `${ATTENDANCE_URL}/${data.id}`,
+        method: "POST",
+        body: { status: data.status, date: data.date },
+      }),
+    }),
   }),
 });
 
-export const { useGetAttendanceMutation } = attendanceApiSlice;
+export const { useGetAttendanceMutation, useCreateAttendanceMutation } =
+  attendanceApiSlice;
