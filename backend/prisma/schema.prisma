@@ -26,8 +26,8 @@ model User {
   superviserId         String?
   superviser           User?           @relation("UserToSuperviser", fields: [superviserId], references: [id])
   supervisingEmployees User[]          @relation("UserToSuperviser")
-  qualifications       Json?
-  employmentHistory    Json?
+  qualifications       Json[]
+  publications         Json[]
   about                String?
   attendance           Attendance[]
   departmentId         Int?

@@ -1,10 +1,36 @@
+import { useEffect, useState } from "react";
 import NormalLayout from "../../layouts/NormalLayout";
 import { FaPenToSquare, FaTrash, FaPlus } from "react-icons/fa6";
 import { useSelector } from "react-redux";
 
 const EditProfilePage = () => {
+  const [userData, setUserData] = useState({
+    email: "",
+    name: "",
+    phone: "",
+    about: "",
+    qualifications: [
+      {
+        degree: "",
+        fieldOfStudy: "",
+        university: "",
+        graduationYear: 2022,
+      },
+    ],
+    publications: [
+      {
+        title: "",
+        journal: "",
+        year: "",
+        url: "",
+      },
+    ],
+  });
   const { userInfo } = useSelector((state) => state.auth);
-
+  console.log(userInfo);
+  useEffect(() => {
+    setUserData({ ...userInfo, qualifications, publications });
+  }, []);
   const qualifications = [
     {
       degree: "Bachelor of Science",
@@ -20,7 +46,7 @@ const EditProfilePage = () => {
     },
   ];
 
-  const samplePublication = [
+  const publications = [
     {
       title: "Sample Publication Title",
       journal: "Sample Journal",
@@ -28,15 +54,47 @@ const EditProfilePage = () => {
       url: "https://www.example.com/publication",
     },
   ];
-  const user = { userInfo, qualifications, publications: samplePublication };
+
+  const handleSavePublication = () => {
+    console.log("save Publication");
+  };
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("submit");
+  };
+  const handleChange = (e) => {
+    console.log(e);
   };
   return (
     <NormalLayout>
       <div>
         <form className="w-50 mx-auto py-5" onSubmit={handleFormSubmit}>
+          <div className="row">
+            {/* Name */}
+            <div className=" col-6 mb-3">
+              <label htmlFor="name" className="form-label">
+                name
+              </label>
+              <input
+                type="text"
+                value={userData.name}
+                onChange={handleChange}
+                className="form-control"
+                placeholder="name"
+              />
+            </div>
+            {/* Phone Number */}
+            <div className="col-6 mb-3">
+              <label htmlFor="phone" className="form-label">
+                Phone Number
+              </label>
+              <input
+                type="number"
+                className="form-control"
+                placeholder="Phone Number"
+              />
+            </div>
+          </div>
           <div className="mb-3">
             <label htmlFor="email" className="form-label">
               Email address
@@ -47,24 +105,7 @@ const EditProfilePage = () => {
               placeholder="name@example.com"
             />
           </div>
-          {/* Name */}
-          <div className="mb-3">
-            <label htmlFor="name" className="form-label">
-              name
-            </label>
-            <input type="text" className="form-control" placeholder="name" />
-          </div>
-          {/* Phone Number */}
-          <div className="mb-3">
-            <label htmlFor="phone" className="form-label">
-              Phone Number
-            </label>
-            <input
-              type="number"
-              className="form-control"
-              placeholder="Phone Number"
-            />
-          </div>
+
           {/* About */}
           <div className="mb-3">
             <label htmlFor="about" className="form-label">
@@ -91,7 +132,7 @@ const EditProfilePage = () => {
               </button>
             </div>
             <div className="d-flex ">
-              {user.qualifications.map((item, idx) => (
+              {userData.qualifications.map((item, idx) => (
                 <div key={idx} className="card mx-1">
                   <div className="card-body">
                     {item.degree} ({item.graduationYear})
@@ -186,7 +227,7 @@ const EditProfilePage = () => {
               </button>
             </div>
             <div className="d-flex ">
-              {user.publications.map((item, idx) => (
+              {userData.publications.map((item, idx) => (
                 <div key={idx} className="card mx-1">
                   <div className="card-body">
                     {item.title} ({item.year})
@@ -258,7 +299,11 @@ const EditProfilePage = () => {
                     >
                       Close
                     </button>
-                    <button type="button" className="btn btn-primary">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      onClick={handleSavePublication}
+                    >
                       Save changes
                     </button>
                   </div>
@@ -267,7 +312,7 @@ const EditProfilePage = () => {
             </div>
           </div>
           <div className="d-flex align-items-center justify-content-center">
-            <button type="submit" className="btn btn-success">
+            <button type="submit" className="btn btn-outline-success">
               Submit
             </button>
           </div>

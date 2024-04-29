@@ -63,48 +63,50 @@ const ProfilePage = () => {
           <div className="">
             <h2>Qualifications</h2>
             <div>
-              {qualifications.map((qualification, index) => (
-                <div key={index}>
-                  <h4>{qualification.degree}</h4>
-                  <p>
-                    <strong>Field of Study:</strong>{" "}
-                    {qualification.fieldOfStudy}
-                  </p>
-                  <p>
-                    <strong>University:</strong> {qualification.university}
-                  </p>
-                  <p>
-                    <strong>Graduation Year:</strong>{" "}
-                    {qualification.graduationYear}
-                  </p>
-                  <hr />
-                </div>
-              ))}
+              {qualifications &&
+                qualifications.map((qualification, index) => (
+                  <div key={index}>
+                    <h4>{qualification.degree}</h4>
+                    <p>
+                      <strong>Field of Study:</strong>{" "}
+                      {qualification.fieldOfStudy}
+                    </p>
+                    <p>
+                      <strong>University:</strong> {qualification.university}
+                    </p>
+                    <p>
+                      <strong>Graduation Year:</strong>{" "}
+                      {qualification.graduationYear}
+                    </p>
+                    <hr />
+                  </div>
+                ))}
             </div>
           </div>
           <div className="">
             <h2>Publications</h2>
-            {samplePublication.map((item, idx) => (
-              <div key={idx}>
-                <h4>{item.title}</h4>
-                <p>
-                  <strong>Journal:</strong> {item.journal}
-                </p>
-                <p>
-                  <strong>Year:</strong> {item.year}
-                </p>
-                <p>
-                  <strong>URL:</strong> <a href={item.url}>{item.url}</a>
-                </p>
-              </div>
-            ))}
+            {samplePublication &&
+              samplePublication.map((item, idx) => (
+                <div key={idx}>
+                  <h4>{item.title}</h4>
+                  <p>
+                    <strong>Journal:</strong> {item.journal}
+                  </p>
+                  <p>
+                    <strong>Year:</strong> {item.year}
+                  </p>
+                  <p>
+                    <strong>URL:</strong> <a href={item.url}>{item.url}</a>
+                  </p>
+                </div>
+              ))}
           </div>
         </div>
         <div className="d-flex justify-content-center align-items-center">
-          <Link to="/profile/edit">
+          <Link to="edit">
             <button className="  btn btn-primary">Edit Details</button>
           </Link>
-          <Link to="/profile/editpassword">
+          <Link to="editpassword">
             <button className="ms-2  btn btn-primary">Change Password</button>
           </Link>
         </div>
