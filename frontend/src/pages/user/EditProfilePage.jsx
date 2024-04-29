@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import NormalLayout from "../../layouts/NormalLayout";
 import { FaPenToSquare, FaTrash, FaPlus } from "react-icons/fa6";
 import { useSelector } from "react-redux";
+import { getYear } from "date-fns";
 
 const EditProfilePage = () => {
   const [userData, setUserData] = useState({
@@ -9,29 +10,33 @@ const EditProfilePage = () => {
     name: "",
     phone: "",
     about: "",
-    qualifications: [
-      {
-        degree: "",
-        fieldOfStudy: "",
-        university: "",
-        graduationYear: 2022,
-      },
-    ],
-    publications: [
-      {
-        title: "",
-        journal: "",
-        year: "",
-        url: "",
-      },
-    ],
+    qualifications: [],
+    publications: [],
   });
+  const [qualification, setQualification] = useState({
+    degree: "",
+    fieldOfStudy: "",
+    university: "",
+    graduationYear: getYear(new Date()),
+  });
+  const [publication, setPublication] = useState({
+    title: "",
+    journal: "",
+    year: getYear(new Date()),
+    url: "",
+  });
+
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo);
+
   useEffect(() => {
-    setUserData({ ...userInfo, qualifications, publications });
+    setUserData({
+      ...userInfo,
+      qualifications: sampleQualifications,
+      publications: samplePublications,
+    });
   }, []);
-  const qualifications = [
+
+  const sampleQualifications = [
     {
       degree: "Bachelor of Science",
       fieldOfStudy: "Computer Science",
@@ -46,7 +51,7 @@ const EditProfilePage = () => {
     },
   ];
 
-  const publications = [
+  const samplePublications = [
     {
       title: "Sample Publication Title",
       journal: "Sample Journal",
@@ -55,20 +60,56 @@ const EditProfilePage = () => {
     },
   ];
 
-  const handleSavePublication = () => {
-    console.log("save Publication");
+  const addQualification = () => {
+    setUserData({
+      ...userData,
+      qualifications: [...userData.qualifications, qualification],
+    });
+    setQualification({
+      degree: "",
+      fieldOfStudy: "",
+      university: "",
+      graduationYear: getYear(new Date()),
+    });
   };
+
+  const handleQualificationChange = (e) => {
+    setQualification({ ...qualification, [e.target.name]: e.target.value });
+  };
+
+  const addPublication = () => {
+    setUserData({
+      ...userData,
+      publications: [...userData.publications, publication],
+    });
+    setPublication({
+      title: "",
+      journal: "",
+      year: getYear(new Date()),
+      url: "",
+    });
+  };
+
+  const handlePublicationChange = (e) => {
+    setPublication({ ...publication, [e.target.name]: e.target.value });
+  };
+
   const handleFormSubmit = (e) => {
     e.preventDefault();
     console.log("submit");
   };
   const handleChange = (e) => {
-    console.log(e);
+    setUserData({ ...userData, [e.target.name]: e.target.value });
   };
+
   return (
     <NormalLayout>
       <div>
-        <form className="w-50 mx-auto py-5" onSubmit={handleFormSubmit}>
+        <form
+          className="mx-auto py-5"
+          onSubmit={handleFormSubmit}
+          style={{ width: "60vw" }}
+        >
           <div className="row">
             {/* Name */}
             <div className=" col-6 mb-3">
@@ -76,6 +117,7 @@ const EditProfilePage = () => {
                 name
               </label>
               <input
+                name="name"
                 type="text"
                 value={userData.name}
                 onChange={handleChange}
@@ -90,6 +132,9 @@ const EditProfilePage = () => {
               </label>
               <input
                 type="number"
+                name="phone"
+                value={userData.phone || ""}
+                onChange={handleChange}
                 className="form-control"
                 placeholder="Phone Number"
               />
@@ -101,6 +146,9 @@ const EditProfilePage = () => {
             </label>
             <input
               type="email"
+              name="email"
+              value={userData.email || ""}
+              onChange={handleChange}
               className="form-control"
               placeholder="name@example.com"
             />
@@ -112,6 +160,9 @@ const EditProfilePage = () => {
               About
             </label>
             <textarea
+              name="about"
+              value={userData.about || ""}
+              onChange={handleChange}
               type="text"
               className="form-control"
               placeholder="About"
@@ -131,16 +182,25 @@ const EditProfilePage = () => {
                 <FaPlus /> Add Qualification
               </button>
             </div>
-            <div className="d-flex ">
+            <div className="d-flex flex-wrap">
               {userData.qualifications.map((item, idx) => (
-                <div key={idx} className="card mx-1">
+                <div
+                  key={idx}
+                  className="card m-1"
+                  style={{ maxWidth: "20vw" }}
+                >
                   <div className="card-body">
-                    {item.degree} ({item.graduationYear})
-                    <div className="d-flex w-10 justify-content-between align-items-center">
-                      <div className="bg-success-subtle p-1 rounded">
+                    <div style={{ minHeight: "60px" }}>
+                      {item.degree} ({item.graduationYear})
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      {/* <div
+                        className="bg-success-subtle p-1 rounded btn"
+                        onClick={() => setQualification(item)}
+                      >
                         <FaPenToSquare />
-                      </div>
-                      <div className="bg-danger-subtle p-1 rounded">
+                      </div> */}
+                      <div className="bg-danger-subtle p-1 rounded btn">
                         <FaTrash />
                       </div>
                     </div>
@@ -149,7 +209,7 @@ const EditProfilePage = () => {
               ))}
             </div>
 
-            {/* <!-- Modal --> */}
+            {/* <!-- Add Modal --> */}
             <div
               className="modal fade"
               id="qualificationModal"
@@ -161,7 +221,7 @@ const EditProfilePage = () => {
                 <div className="modal-content">
                   <div className="modal-header">
                     <h1 className="modal-title fs-5" id="exampleModalLabel">
-                      Modal title
+                      Add Qualification
                     </h1>
                     <button
                       type="button"
@@ -175,25 +235,49 @@ const EditProfilePage = () => {
                       <label htmlFor="degree" className="form-label">
                         Degree
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        name="degree"
+                        value={qualification.degree}
+                        onChange={handleQualificationChange}
+                        type="text"
+                        className="form-control"
+                      />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="fieldOfStudy" className="form-label">
                         Field of Study
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        name="fieldOfStudy"
+                        value={qualification.fieldOfStudy}
+                        onChange={handleQualificationChange}
+                        type="text"
+                        className="form-control"
+                      />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="university" className="form-label">
                         University
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        name="university"
+                        value={qualification.university}
+                        onChange={handleQualificationChange}
+                        type="text"
+                        className="form-control"
+                      />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="graduationYear" className="form-label">
                         Graduation Year
                       </label>
-                      <input type="number" className="form-control" />
+                      <input
+                        name="graduationYear"
+                        value={qualification.graduationYear}
+                        onChange={handleQualificationChange}
+                        type="number"
+                        className="form-control"
+                      />
                     </div>
                   </div>
                   <div className="modal-footer">
@@ -204,7 +288,12 @@ const EditProfilePage = () => {
                     >
                       Close
                     </button>
-                    <button type="button" className="btn btn-primary">
+                    <button
+                      type="button"
+                      className="btn btn-primary"
+                      data-bs-dismiss="modal"
+                      onClick={addQualification}
+                    >
                       Save changes
                     </button>
                   </div>
@@ -226,16 +315,22 @@ const EditProfilePage = () => {
                 <FaPlus /> Add Publication
               </button>
             </div>
-            <div className="d-flex ">
+            <div className="d-flex flex-wrap">
               {userData.publications.map((item, idx) => (
-                <div key={idx} className="card mx-1">
+                <div
+                  key={idx}
+                  className="card m-1"
+                  style={{ maxWidth: "20vw" }}
+                >
                   <div className="card-body">
-                    {item.title} ({item.year})
-                    <div className="d-flex w-10 justify-content-between align-items-center">
-                      <div className="bg-success-subtle p-1 rounded">
+                    <div style={{ minHeight: "60px" }}>
+                      {item.title} ({item.year})
+                    </div>
+                    <div className="d-flex justify-content-between align-items-center">
+                      {/* <div className="bg-success-subtle p-1 rounded btn">
                         <FaPenToSquare />
-                      </div>
-                      <div className="bg-danger-subtle p-1 rounded">
+                      </div> */}
+                      <div className="bg-danger-subtle p-1 rounded btn">
                         <FaTrash />
                       </div>
                     </div>
@@ -270,25 +365,49 @@ const EditProfilePage = () => {
                       <label htmlFor="title" className="form-label">
                         Title
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        name="title"
+                        value={publication.title || ""}
+                        onChange={handlePublicationChange}
+                        type="text"
+                        className="form-control"
+                      />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="journal" className="form-label">
                         Journal
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        name="journal"
+                        value={publication.journal || ""}
+                        onChange={handlePublicationChange}
+                        type="text"
+                        className="form-control"
+                      />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="year" className="form-label">
                         Year
                       </label>
-                      <input type="number" className="form-control" />
+                      <input
+                        name="year"
+                        value={publication.year || ""}
+                        onChange={handlePublicationChange}
+                        type="number"
+                        className="form-control"
+                      />
                     </div>
                     <div className="mb-3">
                       <label htmlFor="url" className="form-label">
                         Url
                       </label>
-                      <input type="text" className="form-control" />
+                      <input
+                        name="url"
+                        value={publication.url || ""}
+                        onChange={handlePublicationChange}
+                        type="text"
+                        className="form-control"
+                      />
                     </div>
                   </div>
                   <div className="modal-footer">
@@ -302,7 +421,8 @@ const EditProfilePage = () => {
                     <button
                       type="button"
                       className="btn btn-primary"
-                      onClick={handleSavePublication}
+                      data-bs-dismiss="modal"
+                      onClick={addPublication}
                     >
                       Save changes
                     </button>
