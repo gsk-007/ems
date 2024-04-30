@@ -98,6 +98,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
   });
   res.status(200).json(users);
 });
+
 // @desc  Get user profile
 // route  GET /api/users/profile
 // @access Private
@@ -114,8 +115,15 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // route  PUT /api/users/profile
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
-  const data = req.body;
-  res.send("UPDATE USER PROFILE");
+  const userData = req.body;
+  const updatedUser = await prisma.user.update({
+    where: {
+      id: req.user.id,
+    },
+    data: userData,
+  });
+  delete updatedUser.password;
+  res.json(updatedUser);
 });
 
 // @desc  Get user profile by id

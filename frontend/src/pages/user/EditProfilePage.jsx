@@ -1,8 +1,12 @@
 import { useEffect, useState } from "react";
 import NormalLayout from "../../layouts/NormalLayout";
 import { FaPenToSquare, FaTrash, FaPlus } from "react-icons/fa6";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { getYear } from "date-fns";
+import { useUpdateUserMutation } from "../../slices/userApiSlice";
+import { toast } from "react-toastify";
+import Spinner from "../../components/Spinner";
+import { setCredentials } from "../../slices/authSlice";
 
 const EditProfilePage = () => {
   const [userData, setUserData] = useState({
@@ -13,6 +17,7 @@ const EditProfilePage = () => {
     qualifications: [],
     publications: [],
   });
+
   const [qualification, setQualification] = useState({
     degree: "",
     fieldOfStudy: "",
@@ -27,6 +32,8 @@ const EditProfilePage = () => {
   });
 
   const { userInfo } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const [updateUser, { isLoading }] = useUpdateUserMutation();
 
   useEffect(() => {
     setUserData({
@@ -34,7 +41,7 @@ const EditProfilePage = () => {
       qualifications: sampleQualifications,
       publications: samplePublications,
     });
-  }, []);
+  }, [userInfo]);
 
   const sampleQualifications = [
     {
@@ -77,6 +84,13 @@ const EditProfilePage = () => {
     setQualification({ ...qualification, [e.target.name]: e.target.value });
   };
 
+  const deleteQualification = (idx) => {
+    setUserData({
+      ...userData,
+      qualifications: userData.qualifications.filter((_, i) => i !== idx),
+    });
+  };
+
   const addPublication = () => {
     setUserData({
       ...userData,
@@ -94,9 +108,22 @@ const EditProfilePage = () => {
     setPublication({ ...publication, [e.target.name]: e.target.value });
   };
 
-  const handleFormSubmit = (e) => {
+  const deletePublication = (idx) => {
+    setUserData({
+      ...userData,
+      publications: userData.publications.filter((_, i) => i !== idx),
+    });
+  };
+
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    console.log("submit");
+    try {
+      const res = await updateUser(userData).unwrap();
+      dispatch(setCredentials({ ...res }));
+      toast.success("Profile Updated Successfully!");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
   const handleChange = (e) => {
     setUserData({ ...userData, [e.target.name]: e.target.value });
@@ -200,7 +227,10 @@ const EditProfilePage = () => {
                       >
                         <FaPenToSquare />
                       </div> */}
-                      <div className="bg-danger-subtle p-1 rounded btn">
+                      <div
+                        className="bg-danger-subtle p-1 rounded btn"
+                        onClick={() => deleteQualification(idx)}
+                      >
                         <FaTrash />
                       </div>
                     </div>
@@ -330,7 +360,10 @@ const EditProfilePage = () => {
                       {/* <div className="bg-success-subtle p-1 rounded btn">
                         <FaPenToSquare />
                       </div> */}
-                      <div className="bg-danger-subtle p-1 rounded btn">
+                      <div
+                        className="bg-danger-subtle p-1 rounded btn"
+                        onClick={() => deletePublication(idx)}
+                      >
                         <FaTrash />
                       </div>
                     </div>
@@ -431,6 +464,7 @@ const EditProfilePage = () => {
               </div>
             </div>
           </div>
+          {isLoading && <Spinner />}
           <div className="d-flex align-items-center justify-content-center">
             <button type="submit" className="btn btn-outline-success">
               Submit
