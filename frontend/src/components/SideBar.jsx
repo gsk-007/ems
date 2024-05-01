@@ -8,7 +8,14 @@ const SideBar = () => {
   const adminSideBarOptions = [
     {
       title: "User",
-      tabs: [{ title: "View New User Requests", url: "/admin/new-user" }],
+      tabs: [
+        { title: "View New User Requests", url: "/admin/new-user" },
+        { title: "Manage User Profile", url: "/admin/manage-user" },
+      ],
+    },
+    {
+      title: "Department",
+      tabs: [{ title: "Manage Department", url: "/admin/department" }],
     },
   ];
   const userSideBarOptions = [

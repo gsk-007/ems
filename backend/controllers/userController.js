@@ -95,6 +95,7 @@ const getAllUsers = asyncHandler(async (req, res) => {
       id: true,
       name: true,
       email: true,
+      role: true,
     },
   });
   res.status(200).json(users);
@@ -176,4 +177,5 @@ export {
   updateUserProfile,
   getAllUsers,
   getUserProfileById,
+  updateUserProfileById,
 };

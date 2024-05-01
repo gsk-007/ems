@@ -47,8 +47,9 @@ const updateDepartment = asyncHandler(async (req, res) => {
 // @access Private admin
 const deleteDepartment = asyncHandler(async (req, res) => {
   const { id } = req.params;
+
   await prisma.department.delete({
-    where: { id },
+    where: { id: Number(id) },
   });
   res.status(200).json("Department Deleted");
 });

@@ -32,6 +32,8 @@ import UserHomePage from "./pages/user/UserHomePage.jsx";
 import AdminHomePage from "./pages/admin/AdminHomePage.jsx";
 import EditProfilePage from "./pages/user/EditProfilePage.jsx";
 import AttendencePage from "./pages/user/AttendencePage.jsx";
+import ManageDepartmentPage from "./pages/admin/ManageDepartmentPage.jsx";
+import ManageUsersPage from "./pages/admin/ManageUsersPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -39,6 +41,8 @@ const router = createBrowserRouter(
       <Route path="/admin" element={<PrivateRoute role="ADMIN" />}>
         <Route path="home" element={<AdminHomePage />} />
         <Route path="new-user" element={<NewUserScreen />} />
+        <Route path="manage-user" element={<ManageUsersPage />} />
+        <Route path="department" element={<ManageDepartmentPage />} />
       </Route>
       <Route path="/user" element={<PrivateRoute role="USER" />}>
         <Route path="home" element={<UserHomePage />} />

@@ -12,7 +12,7 @@ const protect = asyncHandler(async (req, res, next) => {
         where: {
           id: decoded.id,
         },
-        select: { id: true, name: true, email: true },
+        select: { id: true, name: true, email: true, role: true },
       });
       next();
     } catch (error) {

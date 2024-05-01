@@ -24,13 +24,17 @@ export const departmentApiSlice = apiSlice.injectEndpoints({
       }),
     }),
     deleteDepartment: builder.mutation({
-      query: ({ id, data }) => ({
-        url: `${DEPARTMENT_URL}/${id}`,
-        method: "POST",
-        body: data,
+      query: (data) => ({
+        url: `${DEPARTMENT_URL}/${data.id}`,
+        method: "DELETE",
       }),
     }),
   }),
 });
 
-export const { useGetDepartmentsMutation } = departmentApiSlice;
+export const {
+  useGetDepartmentsMutation,
+  useCreateDepartmentMutation,
+  useUpdateDepartmentMutation,
+  useDeleteDepartmentMutation,
+} = departmentApiSlice;
