@@ -4,7 +4,7 @@ const CalendarMonth = ({ month, year, data }) => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const numDaysInMonth = new Date(year, month, 0).getDate();
   const firstDayOfMonth = new Date(year, month - 1, 1).getDay();
-
+  console.log("DATA", data);
   const calendarDays = [];
 
   // Fill in the days before the first day of the month with empty slots
@@ -48,11 +48,17 @@ const CalendarMonth = ({ month, year, data }) => {
             <tr key={rowIndex}>
               {row.map((day, columnIndex) => (
                 <td key={columnIndex} className="text-center">
-                  {day !== "" ? day : ""}{" "}
-                  {columnIndex === 0 || columnIndex === 6 ? (
-                    <p>Off</p>
+                  {day !== "" ? (
+                    <>
+                      {day}
+                      {columnIndex === 0 || columnIndex === 6 ? (
+                        <p>Off</p>
+                      ) : (
+                        <p>{data[day]}</p>
+                      )}
+                    </>
                   ) : (
-                    <p>{data[rowIndex * 7 + columnIndex]}</p>
+                    ""
                   )}
                 </td>
               ))}
