@@ -1,5 +1,3 @@
-import React from "react";
-
 const CalendarMonth = ({ month, year, data }) => {
   const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
   const numDaysInMonth = new Date(year, month, 0).getDate();

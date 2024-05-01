@@ -2,7 +2,7 @@ import asyncHandler from "express-async-handler";
 import prisma from "../db.js";
 
 // @desc  Create new attendance record
-// route  POST /api/attendance
+// route  POST /api/attendance/:id
 // @access Private
 const createAttendance = asyncHandler(async (req, res) => {
   const { status, date } = req.body;

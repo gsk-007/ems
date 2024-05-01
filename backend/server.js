@@ -4,6 +4,7 @@ import cors from "cors";
 import dotenv from "dotenv";
 import userRoutes from "./routes/userRoutes.js";
 import attendanceRoutes from "./routes/attendanceRoutes.js";
+import departmentRoutes from "./routes/departmentRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 import cookieParser from "cookie-parser";
 
@@ -28,6 +29,7 @@ app.get("/", (req, res, next) => {
 
 app.use("/api/users", userRoutes);
 app.use("/api/attendance", attendanceRoutes);
+app.use("/api/department", departmentRoutes);
 
 app.use(notFound);
 app.use(errorHandler);

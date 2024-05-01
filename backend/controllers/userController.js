@@ -17,6 +17,8 @@ const authUser = asyncHandler(async (req, res) => {
   if (user && (await comparePasswords(password, user.password))) {
     createJWT(user.id, res);
     delete user.password;
+    delete user.createdAt;
+    delete user.updatedAt;
     res.status(201).json(user);
   } else {
     res.status(401);
@@ -93,7 +95,6 @@ const getAllUsers = asyncHandler(async (req, res) => {
       id: true,
       name: true,
       email: true,
-      department: true,
     },
   });
   res.status(200).json(users);
@@ -116,6 +117,7 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const userData = req.body;
+  console.log(userData);
   const updatedUser = await prisma.user.update({
     where: {
       id: req.user.id,
@@ -174,5 +176,4 @@ export {
   updateUserProfile,
   getAllUsers,
   getUserProfileById,
-  updateUserProfileById,
 };
