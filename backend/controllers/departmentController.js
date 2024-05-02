@@ -7,8 +7,10 @@ import prisma from "../db.js";
 const getAllDepartments = asyncHandler(async (req, res) => {
   const departments = await prisma.department.findMany({
     select: {
-      name: true,
       id: true,
+      name: true,
+      type: true,
+      superviserId: true
     },
   });
   res.status(200).json(departments);
@@ -35,8 +37,9 @@ const createDepartment = asyncHandler(async (req, res) => {
 const updateDepartment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
+  console.log(data)
   const updateDepartment = await prisma.department.update({
-    where: { id },
+    where: { id: Number(id) },
     data: data,
   });
   res.status(201).send(updateDepartment);

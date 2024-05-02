@@ -4,6 +4,7 @@ import {
   useCreateDepartmentMutation,
   useDeleteDepartmentMutation,
   useGetDepartmentsMutation,
+  useUpdateDepartmentMutation,
 } from "../../slices/departmentApiSlice";
 import { FaPenToSquare, FaPlus, FaTrash } from "react-icons/fa6";
 import Spinner from "../../components/Spinner";
@@ -14,7 +15,7 @@ const ManageDepartmentPage = () => {
   const [departments, setDepartments] = useState([]);
   const [modal, setModal] = useState({
     title: "",
-    onSave: () => {},
+    onSave: () => { },
   });
   const [department, setDepartment] = useState({
     name: "",
@@ -29,6 +30,7 @@ const ManageDepartmentPage = () => {
     useDeleteDepartmentMutation();
   const [createDepartment, { isLoading: createDepartmentLoading }] =
     useCreateDepartmentMutation();
+  const [updateDepartment, { isLoading: updateDepartmentLoading }] = useUpdateDepartmentMutation()
   const [getAllUsers, { isLoading: getAllUsersLoading }] =
     useGetAllUsersMutation();
 
@@ -41,7 +43,6 @@ const ManageDepartmentPage = () => {
   }, []);
 
   const handleChange = (e) => {
-    console.log(e.target.value);
     setDepartment({ ...department, [e.target.name]: e.target.value });
   };
 
@@ -70,7 +71,32 @@ const ManageDepartmentPage = () => {
       });
   };
 
-  const handleEdit = async (id) => {};
+  const handleEdit = async (id) => {
+    const [editDepartment] = departments.filter(item => item.id === id)
+    setDepartment({ ...editDepartment, superviserId: editDepartment.superviserId || 0 })
+    setModal({
+      title: "Edit Department",
+      onSave: async (item) => {
+        try {
+          await updateDepartment({ id, data: { name: item.name, type: item.type, superviserId: item.superviserId === 0 ? null : item.superviserId } }).unwrap()
+          toast.success("Department Updated Succesfully");
+          getDepartments()
+            .unwrap()
+            .then((res) => {
+              setDepartments(res);
+            });
+          setDepartment({ name: "", type: "", superviserId: 0 });
+        } catch (err) {
+          toast.error(err?.data?.message || err.error);
+        }
+      }
+    })
+    getAllUsers()
+      .unwrap()
+      .then((res) => {
+        setUsers(res);
+      });
+  };
 
   const handleDelete = async (id) => {
     try {
@@ -110,6 +136,8 @@ const ManageDepartmentPage = () => {
                 <td>
                   <div
                     onClick={() => handleEdit(item.id)}
+                    data-bs-toggle="modal"
+                    data-bs-target="#departmentModal"
                     className="bg-success-subtle p-1 rounded btn"
                   >
                     <FaPenToSquare />
