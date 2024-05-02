@@ -14,7 +14,7 @@ import { protect } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").get(getAllUsers).post(registerUser);
+router.route("/").get(protect, getAllUsers).post(registerUser);
 router.post("/auth", authUser);
 router.post("/logout", logoutUser);
 router

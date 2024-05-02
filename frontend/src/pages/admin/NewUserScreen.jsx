@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import HomePageLayout from "../../layouts/HomePageLayout";
 import {
-  useGetAllUsersMutation,
+  useGetAllUnapprovedUsersMutation,
   useUpdateUserByIdMutation,
 } from "../../slices/userApiSlice";
 import Spinner from "../../components/Spinner";
@@ -9,7 +9,7 @@ import { toast } from "react-toastify";
 
 const NewUserScreen = () => {
   const [data, setData] = useState([]);
-  const [getAllUsers, { isLoading }] = useGetAllUsersMutation();
+  const [getAllUsers, { isLoading }] = useGetAllUnapprovedUsersMutation();
   const [updateUser, { isLoading: isProfileUpdateLoading }] =
     useUpdateUserByIdMutation();
 
@@ -36,7 +36,7 @@ const NewUserScreen = () => {
     }
   };
 
-  const handleReject = () => {};
+  const handleReject = () => { };
 
   return (
     <HomePageLayout>
