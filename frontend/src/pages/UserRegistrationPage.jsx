@@ -30,7 +30,6 @@ const UserRegisterPage = () => {
     } else {
       try {
         const res = await register({ email, password, role: "USER" }).unwrap();
-        console.log(res);
         dispatch(setCredentials({ ...res }));
         navigate(`/home`);
       } catch (err) {

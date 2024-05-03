@@ -1,4 +1,9 @@
-import React from "react";
+import { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate } from "react-router-dom";
+import { useRegisterMutation } from "../slices/userApiSlice";
+import Spinner from "../components/Spinner";
+import { toast } from "react-toastify";
 
 const AdminRegistrationPage = () => {
   const [email, setEmail] = useState("");
@@ -13,7 +18,7 @@ const AdminRegistrationPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      navigate("/user/home");
     }
   }, [navigate, userInfo]);
 
@@ -24,9 +29,8 @@ const AdminRegistrationPage = () => {
     } else {
       try {
         const res = await register({ email, password, role: "ADMIN" }).unwrap();
-        console.log(res);
         dispatch(setCredentials({ ...res }));
-        navigate(`/user/home`);
+        navigate(`/home`);
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
@@ -40,7 +44,7 @@ const AdminRegistrationPage = () => {
             <div className="card border border-light-subtle rounded-3 shadow-sm">
               <div className="card-body p-3 p-md-4 p-xl-5">
                 <h2 className="fs-6 fw-normal text-center text-secondary mb-4">
-                  Sign Up
+                  Sign Up As Admin
                 </h2>
                 <form onSubmit={submitHandler}>
                   <div className="row gy-2 overflow-hidden">

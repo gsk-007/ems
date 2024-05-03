@@ -87,7 +87,6 @@ const logoutUser = asyncHandler(async (req, res) => {
 // route  GET /api/users/
 // @access Private admin
 const getAllUsers = asyncHandler(async (req, res) => {
-  console.log(req.query);
   const { approved } = req.query;
   if (approved && req.user.role !== "ADMIN") {
     throw new Error("Access Denied");
@@ -122,7 +121,6 @@ const getUserProfile = asyncHandler(async (req, res) => {
 // @access Private
 const updateUserProfile = asyncHandler(async (req, res) => {
   const userData = req.body;
-  console.log(userData);
   const updatedUser = await prisma.user.update({
     where: {
       id: req.user.id,
