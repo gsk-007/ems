@@ -44,7 +44,7 @@ const router = createBrowserRouter(
         <Route path="manage-user" element={<ManageUsersPage />} />
         <Route path="department" element={<ManageDepartmentPage />} />
       </Route>
-      <Route path="/user" element={<PrivateRoute role="USER" />}>
+      <Route path="/user" element={<PrivateRoute role="USERADMIN" />}>
         <Route path="home" element={<UserHomePage />} />
         <Route path="profile" element={<ProfilePage />} />
         <Route path="attendance" element={<AttendencePage />} />

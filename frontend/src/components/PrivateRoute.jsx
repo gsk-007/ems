@@ -6,8 +6,9 @@ const PrivateRoute = ({role}) => {
   const { userInfo } = useSelector((state) => state.auth);
   const navigate = useNavigate()
   useEffect(()=>{
-    if(userInfo.role !== role){
-      navigate(`/${userInfo.role ==="ADMIN"?'admin':'user'}/home`);
+    console.log(role.includes(userInfo.role))
+    if(!role.includes(userInfo.role)){
+      navigate(`/user/home`);
     }
   },[])
 

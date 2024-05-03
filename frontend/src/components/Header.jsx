@@ -40,11 +40,20 @@ const Header = () => {
               <Link
                 className="nav-link active"
                 aria-current="page"
-                to={`/${userInfo.role === "ADMIN" ? "admin" : "user"}/home`}
+                to={`/user/home`}
               >
                 Home
               </Link>
             </li>
+           {userInfo.role == "ADMIN" &&  <li className="nav-item">
+              <Link
+                className="nav-link active"
+                aria-current="page"
+                to={`/admin/home`}
+              >
+                Admin Panel
+              </Link>
+            </li>}
           </ul>
         </div>
         <div className="nav-item dropdown mx-6">
