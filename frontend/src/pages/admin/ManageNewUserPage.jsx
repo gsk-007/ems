@@ -7,7 +7,7 @@ import {
 import Spinner from "../../components/Spinner";
 import { toast } from "react-toastify";
 
-const NewUserScreen = () => {
+const ManageNewUserPage = () => {
   const [data, setData] = useState([]);
   const [getAllUsers, { isLoading }] = useGetAllUnapprovedUsersMutation();
   const [updateUser, { isLoading: isProfileUpdateLoading }] =
@@ -36,7 +36,7 @@ const NewUserScreen = () => {
     }
   };
 
-  const handleReject = () => { };
+  const handleReject = () => {};
 
   return (
     <HomePageLayout>
@@ -84,4 +84,4 @@ const NewUserScreen = () => {
   );
 };
 
-export default NewUserScreen;
+export default ManageNewUserPage;

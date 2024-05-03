@@ -1,21 +1,26 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const [sideBarOptions, setSideBarOptions] = useState([]);
   const { userInfo } = useSelector((state) => state.auth);
+  const location = useLocation();
   const adminSideBarOptions = [
     {
-      title: "User",
+      title: "User Management",
       tabs: [
         { title: "View New User Requests", url: "/admin/new-user" },
         { title: "Manage User Profile", url: "/admin/manage-user" },
       ],
     },
     {
-      title: "Department",
+      title: "Department Management",
       tabs: [{ title: "Manage Department", url: "/admin/department" }],
+    },
+    {
+      title: "Leave Management",
+      tabs: [{ title: "Holiday Management", url: "/admin/leave/holiday" }],
     },
   ];
   const userSideBarOptions = [
@@ -36,7 +41,9 @@ const SideBar = () => {
 
   useEffect(() => {
     setSideBarOptions(
-      userInfo.role === "ADMIN" ? adminSideBarOptions : userSideBarOptions
+      location.pathname.includes("admin")
+        ? adminSideBarOptions
+        : userSideBarOptions
     );
   }, []);
 

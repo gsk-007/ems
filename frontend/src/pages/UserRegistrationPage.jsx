@@ -19,7 +19,7 @@ const UserRegisterPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate("/home");
+      navigate("/user/home");
     }
   }, [navigate, userInfo]);
 
@@ -32,7 +32,7 @@ const UserRegisterPage = () => {
         const res = await register({ email, password, role: "USER" }).unwrap();
         console.log(res);
         dispatch(setCredentials({ ...res }));
-        navigate(`/${userInfo.role === "ADMIN" ? "admin" : "user"}/home`);
+        navigate(`/home`);
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }

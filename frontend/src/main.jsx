@@ -16,7 +16,6 @@ import { ToastContainer } from "react-toastify";
 import ProfilePage from "./pages/user/ProfilePage.jsx";
 import EditPassword from "./components/EditPassword.jsx";
 import UserRegisterPage from "./pages/UserRegistrationPage.jsx";
-import NewUserScreen from "./pages/admin/NewUserScreen.jsx";
 import LeaveApplyPage from "./pages/user/LeaveApplyPage.jsx";
 
 // Bootstrap CSS
@@ -34,15 +33,19 @@ import EditProfilePage from "./pages/user/EditProfilePage.jsx";
 import AttendencePage from "./pages/user/AttendencePage.jsx";
 import ManageDepartmentPage from "./pages/admin/ManageDepartmentPage.jsx";
 import ManageUsersPage from "./pages/admin/ManageUsersPage.jsx";
+import ManageNewUserPage from "./pages/admin/ManageNewUserPage.jsx";
+import ManageHolidayPage from "./pages/admin/ManageHolidayPage.jsx";
+import AdminRegistrationPage from "./pages/AdminRegistrationPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
-    <Route path="/" element={<App />}>
+    <Route path="" element={<App />}>
       <Route path="/admin" element={<PrivateRoute role="ADMIN" />}>
         <Route path="home" element={<AdminHomePage />} />
-        <Route path="new-user" element={<NewUserScreen />} />
+        <Route path="new-user" element={<ManageNewUserPage />} />
         <Route path="manage-user" element={<ManageUsersPage />} />
         <Route path="department" element={<ManageDepartmentPage />} />
+        <Route path="leave/holiday" element={<ManageHolidayPage />} />
       </Route>
       <Route path="/user" element={<PrivateRoute role="USERADMIN" />}>
         <Route path="home" element={<UserHomePage />} />
@@ -56,6 +59,7 @@ const router = createBrowserRouter(
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<LoginPage />} />
       <Route path="/register" element={<UserRegisterPage />} />
+      <Route path="/register-admin" element={<AdminRegistrationPage />} />
     </Route>
   )
 );
