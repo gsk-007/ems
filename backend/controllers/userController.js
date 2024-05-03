@@ -171,6 +171,28 @@ const updateUserProfileById = asyncHandler(async (req, res) => {
   res.status(200).json(updatedUser);
 });
 
+// @desc  Delete User Profile
+// route  DELETE /api/users/:id
+// @access Private Admin
+const deleteUserById = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const user = await prisma.user.findUnique({
+    where: {
+      id,
+    },
+  });
+
+  if (!user) {
+    throw new Error("User Doesn't Exist");
+  }
+
+  await prisma.user.delete({
+    where: { id },
+  });
+
+  res.status(200).json("User Deleted!");
+});
+
 export {
   authUser,
   registerUser,
@@ -180,4 +202,5 @@ export {
   getAllUsers,
   getUserProfileById,
   updateUserProfileById,
+  deleteUserById,
 };
