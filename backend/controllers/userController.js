@@ -38,7 +38,7 @@ const registerUser = asyncHandler(async (req, res) => {
   });
   if (userExists) {
     res.status(400);
-    throw new Error("User Already exists");
+    throw new Error("Invalid User Details");
   }
   if (role === "ADMIN") {
     const adminCount = await prisma.user.count({
@@ -62,10 +62,10 @@ const registerUser = asyncHandler(async (req, res) => {
   });
   if (user) {
     createJWT(user.id, res);
-    res.status(201).json({
-      id: user.id,
-      email: user.email,
-    });
+    delete user.password;
+    delete user.createdAt;
+    delete user.updatedAt;
+    res.status(201).json(user);
   } else {
     res.status(400);
     throw new Error("Invalid user data");

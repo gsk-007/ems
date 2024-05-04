@@ -3,6 +3,7 @@ import { useCreateAttendanceMutation } from "../slices/attendanceApiSlice";
 import { useSelector } from "react-redux";
 import { getDay } from "date-fns";
 import Spinner from "./Spinner";
+import { toast } from "react-toastify";
 
 const SignInComponent = () => {
   const [signIn, setSignIn] = useState(true);
@@ -11,18 +12,22 @@ const SignInComponent = () => {
   const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     if (getDay(new Date()) === 0 || getDay(new Date()) === 6) {
-      setDisabled(true);
+      set(true);
     }
   }, []);
   const handleSignInClick = async () => {
-    const d = new Date().setUTCHours(0, 0, 0, 0);
-    await createAttendance({
-      id: userInfo.id,
-      status: "PRESENT",
-      date: new Date(d).toISOString(),
-      time_in: new Date(d).toTimeString(),
-    });
-    setDisabled(false);
+    try {
+      const d = new Date().setUTCHours(0, 0, 0, 0);
+      await createAttendance({
+        id: userInfo.id,
+        status: "PRESENT",
+        date: new Date(d).toISOString(),
+        time_in: new Date(d).toTimeString(),
+      });
+      setSignIn(true);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
   const handleSignOutClick = async () => {};
   return (

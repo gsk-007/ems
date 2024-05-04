@@ -94,7 +94,7 @@ const LoginPage = () => {
                 </form>
                 <div className="py-3">
                   <div>
-                    New Customer? <Link to={`/register`}>Register</Link>
+                    New User? <Link to={`/register`}>Register</Link>
                   </div>
                 </div>
               </div>

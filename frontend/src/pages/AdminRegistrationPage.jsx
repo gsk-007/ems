@@ -30,7 +30,7 @@ const AdminRegistrationPage = () => {
       try {
         const res = await register({ email, password, role: "ADMIN" }).unwrap();
         dispatch(setCredentials({ ...res }));
-        navigate(`/home`);
+        navigate("/user/home");
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
