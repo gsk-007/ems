@@ -12,6 +12,13 @@ const authUser = asyncHandler(async (req, res) => {
     where: {
       email,
     },
+    include: {
+      department: {
+        select: {
+          superviserId: true,
+        },
+      },
+    },
   });
 
   if (user && (await comparePasswords(password, user.password))) {
@@ -30,7 +37,7 @@ const authUser = asyncHandler(async (req, res) => {
 // route  POST /api/users
 // @access Public
 const registerUser = asyncHandler(async (req, res) => {
-  const { email, password, role } = req.body;
+  const { name, email, password, role } = req.body;
   const userExists = await prisma.user.findUnique({
     where: {
       email,
@@ -54,6 +61,7 @@ const registerUser = asyncHandler(async (req, res) => {
   const hashedPassword = await hashPassword(password);
   const user = await prisma.user.create({
     data: {
+      name: name,
       email,
       password: hashedPassword,
       role: role || "USER",

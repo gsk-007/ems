@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { useRegisterMutation } from "../slices/userApiSlice";
-import { setCredentials } from "../slices/authSlice";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 
 const UserRegisterPage = () => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
-  const dispatch = useDispatch();
 
   const [register, { isLoading }] = useRegisterMutation();
 
@@ -29,9 +28,15 @@ const UserRegisterPage = () => {
       toast.error("Passwords do not match");
     } else {
       try {
-        const res = await register({ email, password, role: "USER" }).unwrap();
-        dispatch(setCredentials({ ...res }));
-        navigate(`/home`);
+        await register({
+          name,
+          email,
+          password,
+          role: "USER",
+        }).unwrap();
+        toast.success("Registered Successfully");
+        toast.info("Please Login to Continue!");
+        navigate(`/login`);
       } catch (err) {
         toast.error(err?.data?.message || err.error);
       }
@@ -49,6 +54,23 @@ const UserRegisterPage = () => {
                 </h2>
                 <form onSubmit={submitHandler}>
                   <div className="row gy-2 overflow-hidden">
+                    <div className="col-12">
+                      <div className="form-floating mb-3">
+                        <input
+                          type="text"
+                          className="form-control"
+                          name="name"
+                          id="name"
+                          value={name}
+                          onChange={(e) => setName(e.target.value)}
+                          placeholder="Name"
+                          required
+                        />
+                        <label htmlFor="Name" className="form-label">
+                          Name
+                        </label>
+                      </div>
+                    </div>
                     <div className="col-12">
                       <div className="form-floating mb-3">
                         <input

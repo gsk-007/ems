@@ -60,16 +60,10 @@ const EditProfilePage = () => {
 
   const sampleQualifications = [
     {
-      degree: "Bachelor of Science",
-      fieldOfStudy: "Computer Science",
+      degree: "Sample Degree",
+      fieldOfStudy: "Sample Course",
       university: "Example University",
       graduationYear: 2022,
-    },
-    {
-      degree: "Master of Business Administration",
-      field_of_study: "Finance",
-      university: "Another University",
-      graduationYear: 2024,
     },
   ];
 
