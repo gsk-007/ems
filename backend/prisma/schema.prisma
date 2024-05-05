@@ -31,6 +31,7 @@ model User {
   department              Department?     @relation(fields: [departmentId], references: [id])
   supervisingDepartmentId Int?
   supervisingDepartment   Department?     @relation("DepartmentSuperviser")
+  leaveTypes              UserLeaveType[]
   leaveRequests           LeaveRequest[]
   leaveApprovals          LeaveApproval[]
 }
@@ -73,17 +74,37 @@ enum TeachingType {
   NONTEACHING
 }
 
+model LeaveType {
+  id           Int             @id @default(autoincrement())
+  type         String
+  maxLimit      Int?  
+  count         Int   @default(0)
+  users        UserLeaveType[]
+  LeaveRequest LeaveRequest[]
+}
+
+model UserLeaveType {
+  id          Int       @id @default(autoincrement())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id])
+  leaveType   LeaveType @relation(fields: [leaveTypeId], references: [id])
+  leaveTypeId Int
+  leaveCount  Int       @default(0)
+}
+
 model LeaveRequest {
-  id        Int            @id @default(autoincrement())
-  LeaveType String
+  id        Int         @id @default(autoincrement())
   StartDate DateTime
   EndDate   DateTime
-  status    String
-  leaveType LeaveStatus
-  userId    String
-  user      User           @relation(fields: [userId], references: [id])
-  approval  LeaveApproval?
-  createdAt DateTime       @default(now())
+  reason    String
+  status    LeaveStatus @default(PENDING)
+  leaveTypeId Int
+  leaveType   LeaveType     @relation(fields: [leaveTypeId], references: [id])
+  userId      String
+  user        User           @relation(fields: [userId], references: [id])
+  approval    LeaveApproval?
+  documents String[]
+  createdAt   DateTime       @default(now())
 }
 
 model LeaveApproval {
@@ -91,12 +112,12 @@ model LeaveApproval {
   supervisorId   String
   leaveRequestId Int    @unique
   supervisor     User   @relation(fields: [supervisorId], references: [id])
-
   leaveRequest LeaveRequest @relation(fields: [leaveRequestId], references: [id])
 }
 
 enum LeaveStatus {
   PENDING
   APPROVED
-  DENIED
+  REJECTED
+  CANCELLED
 }

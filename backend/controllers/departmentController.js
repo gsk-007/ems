@@ -10,7 +10,10 @@ const getAllDepartments = asyncHandler(async (req, res) => {
       id: true,
       name: true,
       type: true,
-      superviserId: true
+      superviserId: true,
+    },
+    orderBy: {
+      id: "asc",
     },
   });
   res.status(200).json(departments);
@@ -37,7 +40,7 @@ const createDepartment = asyncHandler(async (req, res) => {
 const updateDepartment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
-  console.log(data)
+  console.log(data);
   const updateDepartment = await prisma.department.update({
     where: { id: Number(id) },
     data: data,

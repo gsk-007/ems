@@ -15,12 +15,12 @@ const LeaveApplyPage = () => {
           <h2>Applying For Leave</h2>
         </div>
         <form className="mx-4 my-4 " onSubmit={handleSubmit}>
-          <div class="mb-3">
-            <label htmlFor="selectLeaveType" class="form-label">
+          <div className="mb-3">
+            <label htmlFor="selectLeaveType" className="form-label">
               Leave Type
             </label>
             <select
-              class="form-select w-25"
+              className="form-select w-25"
               aria-label="Default select example"
             >
               <option selected>Select Type</option>
@@ -38,7 +38,7 @@ const LeaveApplyPage = () => {
                 <DatePicker onChange={setFromDate} value={fromDate} />
               </div>
             </div>
-            <div class="col-4">
+            <div className="col-4">
               <label htmlFor="=" className="form-label">
                 To Date
               </label>
@@ -47,12 +47,12 @@ const LeaveApplyPage = () => {
               </div>
             </div>
           </div>
-          <div class="mb-3">
-            <label htmlFor="selectLeaveType" class="form-label">
+          <div className="mb-3">
+            <label htmlFor="selectLeaveType" className="form-label">
               Applying To
             </label>
             <select
-              class="form-select w-25"
+              className="form-select w-25"
               aria-label="Default select example"
             >
               <option selected>Select Type</option>
@@ -61,27 +61,27 @@ const LeaveApplyPage = () => {
               <option value="3">Three</option>
             </select>
           </div>
-          <div class="mb-3">
-            <label htmlFor="selectLeaveType" class="form-label">
+          <div className="mb-3">
+            <label htmlFor="selectLeaveType" className="form-label">
               Reason
             </label>
             <textarea
-              class="form-control"
+              className="form-control"
               id="exampleFormControlTextarea1"
               rows="3"
             ></textarea>
           </div>
-          <div class="mb-3">
-            <label for="formFile" class="form-label">
+          <div className="mb-3">
+            <label for="formFile" className="form-label">
               Attach FIle
             </label>
-            <input class="form-control" type="file" id="formFile" />
+            <input className="form-control" type="file" id="formFile" />
           </div>
           <div className="w-25 mx-auto">
-            <button type="submit" class="btn btn-primary me-2">
+            <button type="submit" className="btn btn-primary me-2">
               Submit
             </button>
-            <button type="button" class="btn btn-outline-primary">
+            <button type="button" className="btn btn-outline-primary">
               Cancel
             </button>
           </div>

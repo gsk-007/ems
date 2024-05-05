@@ -7,12 +7,13 @@ import { toast } from "react-toastify";
 
 const SignInComponent = () => {
   const [signIn, setSignIn] = useState(true);
+  const [disabled, setDisabled] = useState(false);
   const [createAttendance, { isLoading }] = useCreateAttendanceMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     if (getDay(new Date()) === 0 || getDay(new Date()) === 6) {
-      set(true);
+      setDisabled(true);
     }
   }, []);
   const handleSignInClick = async () => {
@@ -24,7 +25,7 @@ const SignInComponent = () => {
         date: new Date(d).toISOString(),
         time_in: new Date(d).toTimeString(),
       });
-      setSignIn(true);
+      setSignIn(false);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

@@ -15,7 +15,7 @@ const ManageDepartmentPage = () => {
   const [departments, setDepartments] = useState([]);
   const [modal, setModal] = useState({
     title: "",
-    onSave: () => { },
+    onSave: () => {},
   });
   const [department, setDepartment] = useState({
     name: "",
@@ -30,7 +30,8 @@ const ManageDepartmentPage = () => {
     useDeleteDepartmentMutation();
   const [createDepartment, { isLoading: createDepartmentLoading }] =
     useCreateDepartmentMutation();
-  const [updateDepartment, { isLoading: updateDepartmentLoading }] = useUpdateDepartmentMutation()
+  const [updateDepartment, { isLoading: updateDepartmentLoading }] =
+    useUpdateDepartmentMutation();
   const [getAllUsers, { isLoading: getAllUsersLoading }] =
     useGetAllUsersMutation();
 
@@ -72,13 +73,24 @@ const ManageDepartmentPage = () => {
   };
 
   const handleEdit = async (id) => {
-    const [editDepartment] = departments.filter(item => item.id === id)
-    setDepartment({ ...editDepartment, superviserId: editDepartment.superviserId || 0 })
+    const [editDepartment] = departments.filter((item) => item.id === id);
+    // console.log(editDepartment);
+    setDepartment({
+      ...editDepartment,
+      superviserId: editDepartment.superviserId || 0,
+    });
     setModal({
       title: "Edit Department",
       onSave: async (item) => {
         try {
-          await updateDepartment({ id, data: { name: item.name, type: item.type, superviserId: item.superviserId === 0 ? null : item.superviserId } }).unwrap()
+          await updateDepartment({
+            id,
+            data: {
+              name: item.name,
+              type: item.type,
+              superviserId: item.superviserId === 0 ? null : item.superviserId,
+            },
+          }).unwrap();
           toast.success("Department Updated Succesfully");
           getDepartments()
             .unwrap()
@@ -89,8 +101,8 @@ const ManageDepartmentPage = () => {
         } catch (err) {
           toast.error(err?.data?.message || err.error);
         }
-      }
-    })
+      },
+    });
     getAllUsers()
       .unwrap()
       .then((res) => {

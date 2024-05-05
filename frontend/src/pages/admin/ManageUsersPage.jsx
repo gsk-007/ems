@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
 import {
   useGetAllUsersMutation,
-  useUpdateUserMutation,
+  useUpdateUserByIdMutation,
 } from "../../slices/userApiSlice";
 import HomePageLayout from "../../layouts/HomePageLayout";
 import { useSelector } from "react-redux";
 import Spinner from "../../components/Spinner";
+import { toast } from "react-toastify";
 
 const ManageUsersPage = () => {
   const [data, setData] = useState([]);
   const [adminUserId, setAdminUserId] = useState("");
   const [getAllUsers, { isLoading }] = useGetAllUsersMutation();
   const [updateUser, { isLoading: updateUserLoading }] =
-    useUpdateUserMutation();
-
+    useUpdateUserByIdMutation();
   const { userInfo } = useSelector((state) => state.auth);
 
   useEffect(() => {
@@ -24,8 +24,15 @@ const ManageUsersPage = () => {
       });
   }, [getAllUsers]);
 
-  const handleSave = () => {
-    setAdminUserId("");
+  const handleSave = async () => {
+    console.log(adminUserId);
+    try {
+      await updateUser({ id: adminUserId, role: "ADMIN" }).unwrap();
+      await updateUser({ id: userInfo.id, role: "USER" }).unwrap();
+      setAdminUserId("");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
 
   return (

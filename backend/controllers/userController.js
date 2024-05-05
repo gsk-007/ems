@@ -62,6 +62,19 @@ const registerUser = asyncHandler(async (req, res) => {
   });
   if (user) {
     createJWT(user.id, res);
+    // Create User Leaves in Backend
+    const leaves = await prisma.leaveType.findMany();
+    await Promise.all(
+      leaves.map((item) => {
+        return prisma.userLeaveType.create({
+          data: {
+            userId: user.id,
+            leaveTypeId: item.id,
+            leaveCount: item.count,
+          },
+        });
+      })
+    );
     delete user.password;
     delete user.createdAt;
     delete user.updatedAt;
