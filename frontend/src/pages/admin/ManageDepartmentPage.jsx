@@ -210,7 +210,7 @@ const ManageDepartmentPage = () => {
                   onChange={handleChange}
                   type="text"
                   className="form-control"
-                  placeholder="About"
+                  placeholder="Department Name"
                 />
               </div>
               <div className="mb-3">
