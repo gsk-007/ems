@@ -15,6 +15,18 @@ const getLeaveTypes = asyncHandler(async (req, res) => {
 const getUserLeaves = asyncHandler(async (req, res) => {
   const userLeaves = await prisma.userLeaveType.findMany({
     where: { userId: req.user.id },
+    select: {
+      id: true,
+      leaveCount: true,
+      leaveType: {
+        select: {
+          type: true,
+        },
+      },
+    },
+    orderBy: {
+      leaveCount: "desc",
+    },
   });
   res.status(200).json(userLeaves);
 });

@@ -1,12 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import HomePageLayout from "../../layouts/HomePageLayout";
 import DatePicker from "react-date-picker";
 
 const LeaveApplyPage = () => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
-
-  const handleSubmit = (e) => {};
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log(fromDate.toISOString().substring(0, 10));
+    console.log(toDate.toISOString().substring(0, 10));
+  };
 
   return (
     <HomePageLayout>
@@ -30,7 +33,7 @@ const LeaveApplyPage = () => {
             </select>
           </div>
           <div className="row mb-3">
-            <div className="col-4">
+            <div className="col-md-4">
               <label htmlFor="=" className="form-label">
                 From Date
               </label>
@@ -38,7 +41,7 @@ const LeaveApplyPage = () => {
                 <DatePicker onChange={setFromDate} value={fromDate} />
               </div>
             </div>
-            <div className="col-4">
+            <div className="col-lg-4">
               <label htmlFor="=" className="form-label">
                 To Date
               </label>
@@ -72,7 +75,7 @@ const LeaveApplyPage = () => {
             ></textarea>
           </div>
           <div className="mb-3">
-            <label for="formFile" className="form-label">
+            <label htmlFor="formFile" className="form-label">
               Attach FIle
             </label>
             <input className="form-control" type="file" id="formFile" />
