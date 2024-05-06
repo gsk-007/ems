@@ -1,21 +1,72 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import HomePageLayout from "../../layouts/HomePageLayout";
 import DatePicker from "react-date-picker";
 import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
+import { useGetUserLeavesMutation } from "../../slices/leaveApiSlice";
+import { useUploadFileMutation } from "../../slices/fileUploadApiSlice";
+import Spinner from "../../components/Spinner";
 
 const LeaveApplyPage = () => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
+  const [disabled, setDisabled] = useState(false);
+  const [userLeaves, setUserLeaves] = useState([]);
+  const [formData, setFormData] = useState({
+    leaveTypeId: "",
+    reason: "",
+    documents: [],
+  });
+
+  const [image, setImage] = useState("");
+
+  const ref = useRef();
+
+  const reset = () => {
+    ref.current.value = "";
+  };
 
   const { userInfo } = useSelector((state) => state.auth);
-  console.log(userInfo);
+  const [getUserLeaves, { isLoading: gettingUserLeavesLoading }] =
+    useGetUserLeavesMutation();
+  const [uploadFile, { isLoading: fileUploadLoading }] =
+    useUploadFileMutation();
+  useEffect(() => {
+    // console.log(userInfo);
+    if (!userInfo.department) {
+      setDisabled(true);
+      toast.info("Please join a department for sending a request!");
+    }
+    getUserLeaves()
+      .unwrap()
+      .then((res) => {
+        setUserLeaves(res);
+      });
+  }, []);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const uploadFileHandler = async () => {
+    try {
+      const formData = new FormData();
+      formData.append("image", image);
+      const data = await uploadFile(formData).unwrap();
+      setImage("");
+      setFormData({ ...formData, documents: [data] });
+      toast.success("file Uploaded Successfully");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(fromDate.toISOString().substring(0, 10));
     console.log(toDate.toISOString().substring(0, 10));
+    console.log(formData);
   };
-
-  useEffect(() => {}, []);
 
   return (
     <HomePageLayout>
@@ -29,13 +80,18 @@ const LeaveApplyPage = () => {
               Leave Type
             </label>
             <select
-              className="form-select w-25"
+              className="form-select w-50"
               aria-label="Default select example"
+              value={formData.leaveTypeId}
+              onChange={handleChange}
+              name="leaveTypeId"
             >
-              <option selected>Select Type</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              <option value="">Leave</option>
+              {userLeaves.map((item, idx) => (
+                <option key={idx} value={item.leaveType.id}>
+                  {item.leaveType.type}
+                </option>
+              ))}
             </select>
           </div>
           <div className="row mb-3">
@@ -60,15 +116,14 @@ const LeaveApplyPage = () => {
             <label htmlFor="selectLeaveType" className="form-label">
               Applying To
             </label>
-            <select
-              className="form-select w-25"
-              aria-label="Default select example"
-            >
-              <option selected>Select Type</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+            <div>
+              <input
+                type="text"
+                name=""
+                value={userInfo.department.superviser.name}
+                disabled={true}
+              />
+            </div>
           </div>
           <div className="mb-3">
             <label htmlFor="selectLeaveType" className="form-label">
@@ -78,19 +133,49 @@ const LeaveApplyPage = () => {
               className="form-control"
               id="exampleFormControlTextarea1"
               rows="3"
+              name="reason"
+              value={formData.reason}
+              onChange={handleChange}
             ></textarea>
           </div>
-          <div className="mb-3">
+          <div className="mb-4 ">
             <label htmlFor="formFile" className="form-label">
-              Attach FIle
+              Attach File
             </label>
-            <input className="form-control" type="file" id="formFile" />
+            <div className="d-flex">
+              <input
+                ref={ref}
+                className="form-control w-50 me-3"
+                onChange={(e) => {
+                  setImage(e.target.files[0]);
+                }}
+                type="file"
+                id="formFile"
+              />
+              <button
+                onClick={uploadFileHandler}
+                className=" btn btn-sm btn-outline-primary me-3"
+              >
+                Upload File
+              </button>
+              <button
+                onClick={() => reset()}
+                className=" btn btn-sm btn-outline-danger"
+              >
+                Reset
+              </button>
+              {fileUploadLoading && <Spinner />}
+            </div>
           </div>
-          <div className="w-25 mx-auto">
-            <button type="submit" className="btn btn-primary me-2">
+          <div className="d-flex align-items-center justify-content-center">
+            <button
+              type="submit"
+              className="btn btn-success me-2"
+              disabled={disabled}
+            >
               Submit
             </button>
-            <button type="button" className="btn btn-outline-primary">
+            <button type="button" className="btn btn-outline-danger">
               Cancel
             </button>
           </div>

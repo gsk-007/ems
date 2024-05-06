@@ -21,6 +21,7 @@ const getUserLeaves = asyncHandler(async (req, res) => {
       leaveType: {
         select: {
           type: true,
+          id: true,
         },
       },
     },

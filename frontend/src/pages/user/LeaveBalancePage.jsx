@@ -12,7 +12,6 @@ const LeaveBalancePage = () => {
     getUserLeaves()
       .unwrap()
       .then((res) => {
-        console.log(res);
         setUserLeaves(res);
       })
       .catch((err) => {
@@ -29,16 +28,22 @@ const LeaveBalancePage = () => {
       </div>
       {isLoading && <Spinner />}
       <div className="row mx-2">
-        {userLeaves.map((item, idx) => (
-          <div key={idx} className="card m-2 col-3" style={{ width: "18rem" }}>
-            <div className="card-body">
-              <h5 className="card-title">{item.leaveType.type}</h5>
-              <p className="card-text">
-                Count: <span className="fs-5 fw-medium">{item.leaveCount}</span>
-              </p>
+        {userLeaves &&
+          userLeaves.map((item, idx) => (
+            <div
+              key={idx}
+              className="card m-2 col-3"
+              style={{ width: "18rem" }}
+            >
+              <div className="card-body">
+                <h5 className="card-title">{item.leaveType.type}</h5>
+                <p className="card-text">
+                  Count:{" "}
+                  <span className="fs-5 fw-medium">{item.leaveCount}</span>
+                </p>
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </HomePageLayout>
   );

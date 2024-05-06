@@ -9,6 +9,8 @@ import leaveRoutes from "./routes/leaveRoutes.js";
 import uploadRoutes from "./routes/uploadRoutes.js";
 import { errorHandler, notFound } from "./middleware/errorMiddleware.js";
 import cookieParser from "cookie-parser";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 
 dotenv.config();
 const port = process.env.PORT || 5000;
@@ -34,6 +36,10 @@ app.use("/api/attendance", attendanceRoutes);
 app.use("/api/department", departmentRoutes);
 app.use("/api/leave", leaveRoutes);
 app.use("/api/upload", uploadRoutes);
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+app.use("/uploads", express.static("uploads"));
 
 app.use(notFound);
 app.use(errorHandler);
