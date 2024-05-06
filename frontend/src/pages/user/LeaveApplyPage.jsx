@@ -1,15 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import HomePageLayout from "../../layouts/HomePageLayout";
 import DatePicker from "react-date-picker";
+import { useSelector } from "react-redux";
 
 const LeaveApplyPage = () => {
   const [fromDate, setFromDate] = useState(new Date());
   const [toDate, setToDate] = useState(new Date());
+
+  const { userInfo } = useSelector((state) => state.auth);
+  console.log(userInfo);
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log(fromDate.toISOString().substring(0, 10));
     console.log(toDate.toISOString().substring(0, 10));
   };
+
+  useEffect(() => {}, []);
 
   return (
     <HomePageLayout>

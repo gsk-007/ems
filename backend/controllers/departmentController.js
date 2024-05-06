@@ -40,11 +40,24 @@ const createDepartment = asyncHandler(async (req, res) => {
 const updateDepartment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
-  console.log(data);
+
+  // disconnecting the relation if department superviserId is null
+  if (data.superviserId === "null") {
+    delete data.superviserId;
+    await prisma.department.update({
+      where: { id: Number(id) },
+      data: {
+        superviser: {
+          disconnect: true,
+        },
+      },
+    });
+  }
   const updateDepartment = await prisma.department.update({
     where: { id: Number(id) },
     data: data,
   });
+
   res.status(201).send(updateDepartment);
 });
 

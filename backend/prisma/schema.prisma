@@ -77,8 +77,8 @@ enum TeachingType {
 model LeaveType {
   id           Int             @id @default(autoincrement())
   type         String
-  maxLimit      Int?  
-  count         Int   @default(0)
+  maxLimit     Int?
+  count        Int             @default(0)
   users        UserLeaveType[]
   LeaveRequest LeaveRequest[]
 }
@@ -93,26 +93,26 @@ model UserLeaveType {
 }
 
 model LeaveRequest {
-  id        Int         @id @default(autoincrement())
-  StartDate DateTime
-  EndDate   DateTime
-  reason    String
-  status    LeaveStatus @default(PENDING)
+  id          Int            @id @default(autoincrement())
+  StartDate   DateTime
+  EndDate     DateTime
+  reason      String
+  status      LeaveStatus    @default(PENDING)
   leaveTypeId Int
-  leaveType   LeaveType     @relation(fields: [leaveTypeId], references: [id])
+  leaveType   LeaveType      @relation(fields: [leaveTypeId], references: [id])
   userId      String
   user        User           @relation(fields: [userId], references: [id])
   approval    LeaveApproval?
-  documents String[]
+  documents   String[]
   createdAt   DateTime       @default(now())
 }
 
 model LeaveApproval {
-  id             Int    @id @default(autoincrement())
+  id             Int          @id @default(autoincrement())
   supervisorId   String
-  leaveRequestId Int    @unique
-  supervisor     User   @relation(fields: [supervisorId], references: [id])
-  leaveRequest LeaveRequest @relation(fields: [leaveRequestId], references: [id])
+  leaveRequestId Int          @unique
+  supervisor     User         @relation(fields: [supervisorId], references: [id])
+  leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id])
 }
 
 enum LeaveStatus {
