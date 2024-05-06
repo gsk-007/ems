@@ -35,7 +35,7 @@ const getUserLeaves = asyncHandler(async (req, res) => {
 // route  Post /api/leave/
 // @access Private User
 const createLeaveRequest = asyncHandler(async (req, res) => {
-  const { leaveType, start, end, reason } = req.body;
+  const { leaveType, start, end, reason, supervisorId } = req.body;
   const newLeave = await prisma.leaveRequest.create({
     data: {
       StartDate: start,
@@ -43,9 +43,13 @@ const createLeaveRequest = asyncHandler(async (req, res) => {
       reason: reason,
       leaveTypeId: leaveType,
       userId: req.user.id,
+      approval: {
+        create: {
+          supervisorId,
+        },
+      },
     },
   });
-  // const leaveApproval
   res.status(200).json("Create Leave Request");
 });
 
