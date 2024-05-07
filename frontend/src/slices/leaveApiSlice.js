@@ -9,7 +9,15 @@ export const leaveApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    createUserLeaves: builder.mutation({
+      query: (data) => ({
+        url: `${LEAVE_URL}`,
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
-export const { useGetUserLeavesMutation } = leaveApiSlice;
+export const { useGetUserLeavesMutation, useCreateUserLeavesMutation } =
+  leaveApiSlice;

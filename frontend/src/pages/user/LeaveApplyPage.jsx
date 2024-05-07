@@ -3,15 +3,19 @@ import HomePageLayout from "../../layouts/HomePageLayout";
 import DatePicker from "react-date-picker";
 import { useSelector } from "react-redux";
 import { toast } from "react-toastify";
-import { useGetUserLeavesMutation } from "../../slices/leaveApiSlice";
+import {
+  useCreateUserLeavesMutation,
+  useGetUserLeavesMutation,
+} from "../../slices/leaveApiSlice";
 import { useUploadFileMutation } from "../../slices/fileUploadApiSlice";
 import Spinner from "../../components/Spinner";
 
 const LeaveApplyPage = () => {
-  const [fromDate, setFromDate] = useState(new Date());
-  const [toDate, setToDate] = useState(new Date());
+  const [StartDate, setStartDate] = useState(new Date());
+  const [EndDate, setEndDate] = useState(new Date());
   const [disabled, setDisabled] = useState(false);
   const [userLeaves, setUserLeaves] = useState([]);
+  const [leaveCount, setLeaveCount] = useState(0);
   const [formData, setFormData] = useState({
     leaveTypeId: "",
     reason: "",
@@ -31,6 +35,9 @@ const LeaveApplyPage = () => {
     useGetUserLeavesMutation();
   const [uploadFile, { isLoading: fileUploadLoading }] =
     useUploadFileMutation();
+  const [createLeave, { isLoading: creatingLeaveLoading }] =
+    useCreateUserLeavesMutation();
+
   useEffect(() => {
     // console.log(userInfo);
     if (!userInfo.department) {
@@ -40,12 +47,19 @@ const LeaveApplyPage = () => {
     getUserLeaves()
       .unwrap()
       .then((res) => {
+        console.log(res);
         setUserLeaves(res);
       });
   }, []);
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name == "leaveTypeId") {
+      const data = userLeaves.find(
+        (item) => item.leaveType.id == e.target.value
+      );
+      setLeaveCount(data.leaveCount);
+    }
   };
 
   const uploadFileHandler = async () => {
@@ -61,11 +75,24 @@ const LeaveApplyPage = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(fromDate.toISOString().substring(0, 10));
-    console.log(toDate.toISOString().substring(0, 10));
+    console.log(StartDate);
+    console.log(EndDate);
     console.log(formData);
+    try {
+      const data = {
+        ...formData,
+        StartDate,
+        EndDate,
+        leaveTypeId: Number(formData.leaveTypeId),
+        supervisorId: userInfo.department.superviser.id,
+      };
+      const res = await createLeave(data);
+      toast.success("Leave Applied Successfully");
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
   };
 
   return (
@@ -79,20 +106,24 @@ const LeaveApplyPage = () => {
             <label htmlFor="selectLeaveType" className="form-label">
               Leave Type
             </label>
-            <select
-              className="form-select w-50"
-              aria-label="Default select example"
-              value={formData.leaveTypeId}
-              onChange={handleChange}
-              name="leaveTypeId"
-            >
-              <option value="">Leave</option>
-              {userLeaves.map((item, idx) => (
-                <option key={idx} value={item.leaveType.id}>
-                  {item.leaveType.type}
-                </option>
-              ))}
-            </select>
+            <div className="d-flex">
+              <select
+                className="form-select w-50 me-2"
+                aria-label="Default select example"
+                value={formData.leaveTypeId}
+                onChange={handleChange}
+                name="leaveTypeId"
+                required
+              >
+                <option value="">Leave</option>
+                {userLeaves.map((item, idx) => (
+                  <option key={idx} value={item.leaveType.id}>
+                    {item.leaveType.type}
+                  </option>
+                ))}
+              </select>
+              <p className="mt-2">Balance: {leaveCount}</p>
+            </div>
           </div>
           <div className="row mb-3">
             <div className="col-md-4">
@@ -100,7 +131,7 @@ const LeaveApplyPage = () => {
                 From Date
               </label>
               <div>
-                <DatePicker onChange={setFromDate} value={fromDate} />
+                <DatePicker onChange={setStartDate} value={StartDate} />
               </div>
             </div>
             <div className="col-lg-4">
@@ -108,7 +139,7 @@ const LeaveApplyPage = () => {
                 To Date
               </label>
               <div>
-                <DatePicker onChange={setToDate} value={toDate} />
+                <DatePicker onChange={setEndDate} value={EndDate} />
               </div>
             </div>
           </div>
@@ -136,6 +167,7 @@ const LeaveApplyPage = () => {
               name="reason"
               value={formData.reason}
               onChange={handleChange}
+              required
             ></textarea>
           </div>
           <div className="mb-4 ">
