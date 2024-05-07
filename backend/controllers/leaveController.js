@@ -10,7 +10,7 @@ const getLeaveTypes = asyncHandler(async (req, res) => {
 });
 
 // @desc  Get User Leave Types
-// route  GET /api/leave/userleave
+// route  GET /api/leave/types
 // @access Private User
 const getUserLeaves = asyncHandler(async (req, res) => {
   const userLeaves = await prisma.userLeaveType.findMany({
@@ -33,7 +33,7 @@ const getUserLeaves = asyncHandler(async (req, res) => {
 });
 
 // @desc  Create a Leave Request
-// route  Post /api/leave/
+// route  POST /api/leave/request
 // @access Private User
 const createLeaveRequest = asyncHandler(async (req, res) => {
   const { leaveTypeId, StartDate, EndDate, reason, supervisorId } = req.body;
@@ -53,6 +53,30 @@ const createLeaveRequest = asyncHandler(async (req, res) => {
   });
   res.status(200).json("Create Leave Request");
 });
+// @desc  Get Leave Request
+// route  GET /api/leave/request
+// @access Private User
+const getUserLeaveRequests = asyncHandler(async (req, res) => {
+  const leaveRequests = await prisma.leaveRequest.findMany({
+    where: {
+      userId: req.user.id,
+    },
+    select: {
+      id: true,
+      StartDate: true,
+      EndDate: true,
+      reason: true,
+      status: true,
+      leaveType: {
+        select: {
+          type: true,
+        },
+      },
+      documents: true,
+    },
+  });
+  res.status(200).json(leaveRequests);
+});
 
 // @desc  Update  Leave Request Status
 // route  PUT /api/leave/:id
@@ -69,8 +93,8 @@ const deleteLeaveRequest = asyncHandler(async (req, res) => {
 });
 
 export {
-  getLeaveTypes,
   getUserLeaves,
+  getUserLeaveRequests,
   createLeaveRequest,
   updateLeaveRequestStatus,
   deleteLeaveRequest,
