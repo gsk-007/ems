@@ -49,9 +49,9 @@ const LeaveStatusPage = () => {
                 {pendingLeaves.length > 0 ? (
                   <div>
                     {pendingLeaves.map((item, idx) => (
-                      <div key={idx} class="card mx-2">
-                        <div class="card-body">
-                          <h5 class="card-title">
+                      <div key={idx} className="card mx-2">
+                        <div className="card-body">
+                          <h5 className="card-title">
                             Leave{" "}
                             <span className="badge text-bg-primary ms-3 d-inline">
                               {item.status}
@@ -62,7 +62,7 @@ const LeaveStatusPage = () => {
                             {new Date(item.EndDate).toLocaleDateString()}
                           </p>
                           <div>
-                            <p class="card-text"> Reason: {item.reason}</p>
+                            <p className="card-text"> Reason: {item.reason}</p>
                           </div>
                           <button className="btn btn-sm btn-outline-danger position-absolute bottom-0 end-0 me-4 mb-2">
                             Cancel
@@ -99,9 +99,9 @@ const LeaveStatusPage = () => {
                 {approvedLeaves.length > 0 ? (
                   <div>
                     {approvedLeaves.map((item, idx) => (
-                      <div key={idx} class="card mx-2">
-                        <div class="card-body">
-                          <h5 class="card-title">
+                      <div key={idx} className="card mx-2">
+                        <div className="card-body">
+                          <h5 className="card-title">
                             Leave{" "}
                             <span className="badge text-bg-primary ms-3 d-inline">
                               {item.status}
@@ -112,7 +112,7 @@ const LeaveStatusPage = () => {
                             {new Date(item.EndDate).toLocaleDateString()}
                           </p>
                           <div>
-                            <p class="card-text"> Reason: {item.reason}</p>
+                            <p className="card-text"> Reason: {item.reason}</p>
                           </div>
                         </div>
                       </div>

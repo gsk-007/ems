@@ -37,6 +37,7 @@ import ManageNewUserPage from "./pages/admin/ManageNewUserPage.jsx";
 import ManageHolidayPage from "./pages/admin/ManageHolidayPage.jsx";
 import AdminRegistrationPage from "./pages/AdminRegistrationPage.jsx";
 import LeaveBalancePage from "./pages/user/LeaveBalancePage.jsx";
+import LeaveRequestsPage from "./pages/user/LeaveRequestsPage.jsx";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -57,6 +58,7 @@ const router = createBrowserRouter(
         <Route path="leave/apply" element={<LeaveApplyPage />} />
         <Route path="leave/status" element={<LeaveStatusPage />} />
         <Route path="leave/balance" element={<LeaveBalancePage />} />
+        <Route path="leave/requests" element={<LeaveRequestsPage />} />
       </Route>
       <Route path="/login" element={<LoginPage />} />
       <Route path="/" element={<LoginPage />} />

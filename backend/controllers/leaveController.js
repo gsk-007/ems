@@ -79,6 +79,42 @@ const getUserLeaveRequests = asyncHandler(async (req, res) => {
 });
 
 // @desc  Update  Leave Request Status
+// route  GET /api/leave/
+// @access Private User
+const getUserApprovalRequests = asyncHandler(async (req, res) => {
+  const leaveApprovals = await prisma.leaveApproval.findMany({
+    where: {
+      supervisorId: req.user.id,
+    },
+    include: {
+      leaveRequest: {
+        select: {
+          StartDate: true,
+          EndDate: true,
+          reason: true,
+          status: true,
+          documents: true,
+          leaveType: {
+            include: {
+              leaveType: {
+                select: {
+                  type: true,
+                },
+              },
+            },
+          },
+          user: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+  res.status(200).json(leaveApprovals);
+});
+// @desc  Update  Leave Request Status
 // route  PUT /api/leave/:id
 // @access Private User
 const updateLeaveRequestStatus = asyncHandler(async (req, res) => {
@@ -95,6 +131,7 @@ const deleteLeaveRequest = asyncHandler(async (req, res) => {
 export {
   getUserLeaves,
   getUserLeaveRequests,
+  getUserApprovalRequests,
   createLeaveRequest,
   updateLeaveRequestStatus,
   deleteLeaveRequest,

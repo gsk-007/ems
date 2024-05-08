@@ -2,6 +2,7 @@ import express from "express";
 import {
   createLeaveRequest,
   deleteLeaveRequest,
+  getUserApprovalRequests,
   getUserLeaveRequests,
   getUserLeaves,
   updateLeaveRequestStatus,
@@ -14,6 +15,8 @@ router
   .route("/request")
   .get(protect, getUserLeaveRequests)
   .post(protect, createLeaveRequest);
+
+router.route("/approval").get(protect, getUserApprovalRequests);
 router
   .route("/request/:id")
   .put(updateLeaveRequestStatus)

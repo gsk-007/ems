@@ -23,6 +23,11 @@ const authUser = asyncHandler(async (req, res) => {
           },
         },
       },
+      leaveApprovals: {
+        select: {
+          leaveRequestId: true,
+        },
+      },
     },
   });
 

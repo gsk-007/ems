@@ -75,21 +75,21 @@ enum TeachingType {
 }
 
 model LeaveType {
-  id           Int             @id @default(autoincrement())
-  type         String
-  maxLimit     Int?
-  count        Int             @default(0)
-  users        UserLeaveType[]
-  LeaveRequest LeaveRequest[]
+  id       Int             @id @default(autoincrement())
+  type     String
+  maxLimit Int?
+  count    Int             @default(0)
+  users    UserLeaveType[]
 }
 
 model UserLeaveType {
-  id          Int       @id @default(autoincrement())
-  userId      String
-  user        User      @relation(fields: [userId], references: [id])
-  leaveType   LeaveType @relation(fields: [leaveTypeId], references: [id])
-  leaveTypeId Int
-  leaveCount  Int       @default(0)
+  id           Int            @id @default(autoincrement())
+  userId       String
+  user         User           @relation(fields: [userId], references: [id])
+  leaveType    LeaveType      @relation(fields: [leaveTypeId], references: [id])
+  leaveTypeId  Int
+  leaveCount   Int            @default(0)
+  LeaveRequest LeaveRequest[]
 }
 
 model LeaveRequest {
@@ -99,7 +99,7 @@ model LeaveRequest {
   reason      String
   status      LeaveStatus    @default(PENDING)
   leaveTypeId Int
-  leaveType   LeaveType      @relation(fields: [leaveTypeId], references: [id])
+  leaveType   UserLeaveType  @relation(fields: [leaveTypeId], references: [id])
   userId      String
   user        User           @relation(fields: [userId], references: [id])
   approval    LeaveApproval?
