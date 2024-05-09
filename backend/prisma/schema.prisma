@@ -47,7 +47,7 @@ model Attendance {
   date     DateTime         @db.Date
   time_in  DateTime?
   time_out DateTime?
-  user     User             @relation(fields: [userId], references: [id], onDelete: NoAction)
+  user     User             @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([userId, date])
 }
@@ -64,7 +64,7 @@ model Department {
   type         TeachingType
   user         User[]
   supervisorId String?      @unique
-  supervisor   User?        @relation("DepartmentSupervisor", fields: [supervisorId], references: [id], onDelete: SetDefault)
+  supervisor   User?        @relation("DepartmentSupervisor", fields: [supervisorId], references: [id], onDelete: SetNull)
   createdAt    DateTime     @default(now())
 }
 
@@ -98,9 +98,9 @@ model LeaveRequest {
   reason      String
   status      LeaveStatus    @default(PENDING)
   leaveTypeId Int
-  leaveType   UserLeaveType  @relation(fields: [leaveTypeId], references: [id], onDelete: Cascade)
+  leaveType   UserLeaveType  @relation(fields: [leaveTypeId], references: [id], onDelete: SetDefault)
   userId      String
-  user        User           @relation(fields: [userId], references: [id], onDelete: NoAction)
+  user        User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   approval    LeaveApproval?
   documents   String[]
   createdAt   DateTime       @default(now())
