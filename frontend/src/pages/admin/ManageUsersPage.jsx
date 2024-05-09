@@ -25,7 +25,6 @@ const ManageUsersPage = () => {
   }, [getAllUsers]);
 
   const handleSave = async () => {
-    console.log(adminUserId);
     try {
       await updateUser({ id: adminUserId, role: "ADMIN" }).unwrap();
       await updateUser({ id: userInfo.id, role: "USER" }).unwrap();

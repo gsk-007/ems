@@ -47,7 +47,7 @@ const LeaveApplyPage = () => {
     getUserLeaves()
       .unwrap()
       .then((res) => {
-        console.log(res);
+        // console.log(res);
         setUserLeaves(res);
       });
   }, []);
@@ -123,7 +123,7 @@ const LeaveApplyPage = () => {
           <div className="row mb-3">
             <div className="col-md-4">
               <label htmlFor="=" className="form-label">
-                From Date
+                Start Date
               </label>
               <div>
                 <DatePicker onChange={setStartDate} value={StartDate} />
@@ -131,7 +131,7 @@ const LeaveApplyPage = () => {
             </div>
             <div className="col-lg-4">
               <label htmlFor="=" className="form-label">
-                To Date
+                End Date
               </label>
               <div>
                 <DatePicker onChange={setEndDate} value={EndDate} />

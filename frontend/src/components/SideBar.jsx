@@ -38,7 +38,7 @@ const SideBar = () => {
     {
       title: "Leave",
       tabs:
-        userInfo.leaveApprovals.length > 0
+        userInfo.leaveApprovals && userInfo.leaveApprovals.length > 0
           ? userLeaveApprovalTabs
           : userLeaveTabs,
     },

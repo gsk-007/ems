@@ -13,7 +13,6 @@ const LeaveStatusPage = () => {
     getUserLeaveRequests()
       .unwrap()
       .then((res) => {
-        console.log(res);
         setPendingLeaves(res.filter((item) => item.status === "PENDING"));
         setApprovedLeaves(res.filter((item) => item.status === "APPROVED"));
       });

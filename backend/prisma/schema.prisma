@@ -94,8 +94,8 @@ model UserLeaveType {
 
 model LeaveRequest {
   id          Int            @id @unique @default(autoincrement())
-  StartDate   DateTime
-  EndDate     DateTime
+  StartDate   DateTime       @db.Date
+  EndDate     DateTime       @db.Date
   reason      String
   status      LeaveStatus    @default(PENDING)
   leaveTypeId Int

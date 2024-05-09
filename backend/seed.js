@@ -1,9 +1,4 @@
 import prisma from "./db.js";
-await prisma.leaveRequest.deleteMany({
-  where: {
-    id: 1,
-  },
-});
 
 // const leaveData = [
 //   { type: "Casual Leave", count: 10 },
@@ -15,34 +10,41 @@ await prisma.leaveRequest.deleteMany({
 // ];
 
 // await prisma.leaveType.createMany({ data: leaveData });
+
 // import { hashPassword } from "./utils/auth.js";
 // const userData = [
 //   {
+//     name: "user",
 //     email: "user@test.com",
 //     password: await hashPassword("123456"),
 //     role: "USER",
 //   },
 //   {
+//     name: "user1",
 //     email: "user1@test.com",
 //     password: await hashPassword("123456"),
 //     role: "USER",
 //   },
 //   {
+//     name: "user2",
 //     email: "user2@test.com",
 //     password: await hashPassword("123456"),
 //     role: "USER",
 //   },
 //   {
+//     name: "user3",
 //     email: "user3@test.com",
 //     password: await hashPassword("123456"),
 //     role: "USER",
 //   },
 //   {
+//     name: "user4",
 //     email: "user4@test.com",
 //     password: await hashPassword("123456"),
 //     role: "USER",
 //   },
 //   {
+//     name: "admin",
 //     email: "admin@test.com",
 //     password: await hashPassword("123456"),
 //     role: "ADMIN",
