@@ -48,7 +48,7 @@ const LeaveStatusPage = () => {
                 {pendingLeaves.length > 0 ? (
                   <div>
                     {pendingLeaves.map((item, idx) => (
-                      <div key={idx} className="card mx-2">
+                      <div key={idx} className="card m-2">
                         <div className="card-body">
                           <h5 className="card-title">
                             Leave{" "}

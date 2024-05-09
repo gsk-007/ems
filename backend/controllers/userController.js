@@ -79,7 +79,6 @@ const registerUser = asyncHandler(async (req, res) => {
     },
   });
   if (user) {
-    createJWT(user.id, res);
     // Create User Leaves in Backend
     const leaves = await prisma.leaveType.findMany();
     await Promise.all(
@@ -157,8 +156,27 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       id: req.user.id,
     },
     data: userData,
+    include: {
+      department: {
+        select: {
+          supervisor: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+      leaveApprovals: {
+        select: {
+          leaveRequestId: true,
+        },
+      },
+    },
   });
   delete updatedUser.password;
+  delete updatedUser.createdAt;
+  delete updatedUser.updatedAt;
   res.json(updatedUser);
 });
 

@@ -9,6 +9,7 @@ import {
 } from "../../slices/leaveApiSlice";
 import { useUploadFileMutation } from "../../slices/fileUploadApiSlice";
 import Spinner from "../../components/Spinner";
+import { useNavigate } from "react-router-dom";
 
 const LeaveApplyPage = () => {
   const [StartDate, setStartDate] = useState(new Date());
@@ -21,8 +22,9 @@ const LeaveApplyPage = () => {
     reason: "",
     documents: [],
   });
-
   const [image, setImage] = useState("");
+
+  const navigate = useNavigate();
 
   const ref = useRef();
 
@@ -37,10 +39,8 @@ const LeaveApplyPage = () => {
     useUploadFileMutation();
   const [createLeave, { isLoading: creatingLeaveLoading }] =
     useCreateUserLeavesMutation();
-
   useEffect(() => {
-    // console.log(userInfo);
-    if (!userInfo.department) {
+    if (userInfo.department === null) {
       setDisabled(true);
       toast.info("Please join a department for sending a request!");
     }
@@ -81,10 +81,11 @@ const LeaveApplyPage = () => {
         StartDate,
         EndDate,
         leaveTypeId: Number(formData.leaveTypeId),
-        supervisorId: userInfo.department.supervisor.id || "",
+        supervisorId: userInfo.department.supervisor.id,
       };
-      const res = await createLeave(data);
+      await createLeave(data);
       toast.success("Leave Applied Successfully");
+      navigate("/user/leave/status");
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -102,6 +103,7 @@ const LeaveApplyPage = () => {
               Leave Type
             </label>
             <div className="d-flex">
+              {gettingUserLeavesLoading && <Spinner />}
               <select
                 className="form-select w-50 me-2"
                 aria-label="Default select example"
@@ -146,7 +148,9 @@ const LeaveApplyPage = () => {
               <input
                 type="text"
                 name=""
-                value={userInfo.department.supervisor.name}
+                value={
+                  userInfo.department ? userInfo.department.supervisor.name : ""
+                }
                 disabled={true}
               />
             </div>
@@ -194,6 +198,7 @@ const LeaveApplyPage = () => {
               {fileUploadLoading && <Spinner />}
             </div>
           </div>
+          {creatingLeaveLoading && <Spinner />}
           <div className="d-flex align-items-center justify-content-center">
             <button
               type="submit"

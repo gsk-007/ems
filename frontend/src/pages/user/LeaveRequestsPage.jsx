@@ -42,6 +42,8 @@ const LeaveRequestsPage = () => {
         status: "APPROVED",
         newLeaveCount: modalData.leaveCount - difference,
       }).unwrap();
+      const res = await getUserLeaveApproval().unwrap();
+      setLeaveApprovals(res);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }
@@ -53,6 +55,8 @@ const LeaveRequestsPage = () => {
         status: "REJECTED",
         newLeaveCount: modalData.leaveCount,
       }).unwrap();
+      const res = await getUserLeaveApproval().unwrap();
+      setLeaveApprovals(res);
     } catch (err) {
       toast.error(err?.data?.message || err.error);
     }

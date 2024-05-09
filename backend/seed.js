@@ -63,45 +63,45 @@ import prisma from "./db.js";
 //   })
 // );
 
-// const departments = [
-//   {
-//     name: "Computer Science Engineering",
-//     type: "TEACHING",
-//   },
-//   {
-//     name: "Electronics and Telecommunications Engineering",
-//     type: "TEACHING",
-//   },
-//   {
-//     name: "Electrical and Electronic Engineering",
-//     type: "TEACHING",
-//   },
-//   {
-//     name: "Mechanical Engineering",
-//     type: "TEACHING",
-//   },
-//   {
-//     name: "Humanities",
-//     type: "TEACHING",
-//   },
-//   {
-//     name: "Director Office",
-//     type: "NONTEACHING",
-//   },
-//   {
-//     name: "Dean Office",
-//     type: "NONTEACHING",
-//   },
-//   {
-//     name: "Registrar Office",
-//     type: "NONTEACHING",
-//   },
-//   {
-//     name: "Accounts Office",
-//     type: "NONTEACHING",
-//   },
-// ];
+const departments = [
+  {
+    name: "Computer Science Engineering",
+    type: "TEACHING",
+  },
+  {
+    name: "Electronics and Telecommunications Engineering",
+    type: "TEACHING",
+  },
+  {
+    name: "Electrical and Electronic Engineering",
+    type: "TEACHING",
+  },
+  {
+    name: "Mechanical Engineering",
+    type: "TEACHING",
+  },
+  {
+    name: "Humanities",
+    type: "TEACHING",
+  },
+  {
+    name: "Director Office",
+    type: "NONTEACHING",
+  },
+  {
+    name: "Dean Office",
+    type: "NONTEACHING",
+  },
+  {
+    name: "Registrar Office",
+    type: "NONTEACHING",
+  },
+  {
+    name: "Accounts Office",
+    type: "NONTEACHING",
+  },
+];
 
-// await prisma.department.createMany({
-//   data: departments,
-// });
+await prisma.department.createMany({
+  data: departments,
+});
