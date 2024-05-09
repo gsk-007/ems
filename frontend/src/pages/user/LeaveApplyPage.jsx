@@ -55,9 +55,7 @@ const LeaveApplyPage = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
     if (e.target.name == "leaveTypeId") {
-      const data = userLeaves.find(
-        (item) => item.leaveType.id == e.target.value
-      );
+      const data = userLeaves.find((item) => item.id == e.target.value);
       setLeaveCount(data.leaveCount);
     }
   };
@@ -77,9 +75,6 @@ const LeaveApplyPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(StartDate);
-    console.log(EndDate);
-    console.log(formData);
     try {
       const data = {
         ...formData,
@@ -117,7 +112,7 @@ const LeaveApplyPage = () => {
               >
                 <option value="">Leave</option>
                 {userLeaves.map((item, idx) => (
-                  <option key={idx} value={item.leaveType.id}>
+                  <option key={idx} value={item.id}>
                     {item.leaveType.type}
                   </option>
                 ))}

@@ -28,6 +28,13 @@ export const leaveApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    updateLeaveRequest: builder.mutation({
+      query: ({ id, ...data }) => ({
+        url: `${LEAVE_URL}/request/${id}`,
+        method: "PUT",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -36,4 +43,5 @@ export const {
   useCreateUserLeavesMutation,
   useGetUserLeaveRequestsMutation,
   useGetUserLeaveApprovalRequestsMutation,
+  useUpdateLeaveRequestMutation,
 } = leaveApiSlice;

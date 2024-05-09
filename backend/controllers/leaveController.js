@@ -67,11 +67,6 @@ const getUserLeaveRequests = asyncHandler(async (req, res) => {
       EndDate: true,
       reason: true,
       status: true,
-      leaveType: {
-        select: {
-          type: true,
-        },
-      },
       documents: true,
     },
   });
@@ -118,6 +113,19 @@ const getUserApprovalRequests = asyncHandler(async (req, res) => {
 // route  PUT /api/leave/:id
 // @access Private User
 const updateLeaveRequestStatus = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { status, newLeaveCount } = req.body;
+  const updated = await prisma.leaveRequest.update({
+    where: { id: Number(id) },
+    data: { status },
+  });
+  await prisma.userLeaveType.update({
+    where: {
+      id: updated.leaveTypeId,
+    },
+    data: { leaveCount: Number(newLeaveCount) },
+  });
+
   res.status(200).json("Update Leave Request");
 });
 

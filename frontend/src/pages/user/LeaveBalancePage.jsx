@@ -12,6 +12,7 @@ const LeaveBalancePage = () => {
     getUserLeaves()
       .unwrap()
       .then((res) => {
+        console.log(res);
         setUserLeaves(res);
       })
       .catch((err) => {
