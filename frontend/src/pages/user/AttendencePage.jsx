@@ -9,7 +9,6 @@ const AttendencePage = () => {
   const [attendanceData, setAttendanceData] = useState([]);
   const [month, setMonth] = useState(new Date().getMonth() + 1);
   const [year, setYear] = useState(new Date().getFullYear());
-  const months = [];
 
   const [getAttendance, { isLoading }] = useGetAttendanceMutation();
 

@@ -34,10 +34,8 @@ const LeaveRequestsPage = () => {
   }, []);
 
   const onApprove = async () => {
-    console.log(modalData.start, modalData.end);
     const difference =
       getNumberOfDays(new Date(modalData.start), new Date(modalData.end)) + 1;
-    console.log(difference);
     try {
       await updateLeave({
         id: modalData.id,

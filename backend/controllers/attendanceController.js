@@ -2,22 +2,6 @@ import asyncHandler from "express-async-handler";
 import prisma from "../db.js";
 
 // @desc  Create new attendance record
-// route  POST /api/attendance/:id
-// @access Private
-const createAttendance = asyncHandler(async (req, res) => {
-  const { status, date } = req.body;
-  const { id } = req.params;
-  const newAttendance = await prisma.attendance.create({
-    data: {
-      userId: id,
-      status,
-      date,
-    },
-  });
-  res.status(201).json({ data: "Attendance Created" });
-});
-
-// @desc  Create new attendance record
 // route  get /api/attendance
 // @access Private
 const getCurrentUserAttendance = asyncHandler(async (req, res) => {
@@ -55,4 +39,43 @@ const getCurrentUserAttendance = asyncHandler(async (req, res) => {
   res.status(200).json(attendance);
 });
 
-export { createAttendance, getCurrentUserAttendance };
+// @desc  Create new attendance record
+// route  POST /api/attendance/:id
+// @access Private
+const createAttendance = asyncHandler(async (req, res) => {
+  const { status, date, time_in } = req.body;
+  const { id } = req.params;
+  const newAttendance = await prisma.attendance.create({
+    data: {
+      userId: id,
+      status,
+      date,
+      time_in,
+    },
+  });
+  res.status(201).json({ data: "Attendance Created" });
+});
+
+// @desc  Update  attendance record
+// route  PUT /api/attendance/:id
+// @access Private
+const updateUserCurrentAttendance = asyncHandler(async (req, res) => {
+  const { date, time_out } = req.body;
+  const { id } = req.params;
+  const updated = await prisma.attendance.update({
+    where: {
+      date,
+      userId: id,
+    },
+    data: {
+      time_out,
+    },
+  });
+  res.status(201).json({ data: "Attendance Updated" });
+});
+
+export {
+  createAttendance,
+  getCurrentUserAttendance,
+  updateUserCurrentAttendance,
+};
