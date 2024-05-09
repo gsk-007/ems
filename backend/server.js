@@ -12,7 +12,7 @@ import cookieParser from "cookie-parser";
 import path from "path";
 
 dotenv.config();
-const port = process.env.PORT || 5000;
+const port = 5000;
 
 const app = express();
 
