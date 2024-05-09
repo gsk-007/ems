@@ -28,7 +28,7 @@ model User {
   attendance              Attendance[]
   departmentId            Int?
   isApproved              Boolean?        @default(false)
-  department              Department?     @relation(fields: [departmentId], references: [id])
+  department              Department?     @relation(fields: [departmentId], references: [id], onDelete: NoAction)
   supervisingDepartmentId Int?
   supervisingDepartment   Department?     @relation("DepartmentSupervisor")
   leaveTypes              UserLeaveType[]
@@ -48,7 +48,7 @@ model Attendance {
   date     DateTime         @db.Date
   time_in  DateTime?
   time_out DateTime?
-  user     User             @relation(fields: [userId], references: [id])
+  user     User             @relation(fields: [userId], references: [id], onDelete: NoAction)
 
   @@unique([userId, date])
 }
@@ -65,7 +65,7 @@ model Department {
   type         TeachingType
   user         User[]
   supervisorId String?      @unique
-  supervisor   User?        @relation("DepartmentSupervisor", fields: [supervisorId], references: [id])
+  supervisor   User?        @relation("DepartmentSupervisor", fields: [supervisorId], references: [id], onDelete: NoAction)
   createdAt    DateTime     @default(now())
 }
 
@@ -85,7 +85,7 @@ model LeaveType {
 model UserLeaveType {
   id           Int            @id @default(autoincrement())
   userId       String
-  user         User           @relation(fields: [userId], references: [id])
+  user         User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   leaveType    LeaveType      @relation(fields: [leaveTypeId], references: [id])
   leaveTypeId  Int
   leaveCount   Int            @default(0)
@@ -99,9 +99,9 @@ model LeaveRequest {
   reason      String
   status      LeaveStatus    @default(PENDING)
   leaveTypeId Int
-  leaveType   UserLeaveType  @relation(fields: [leaveTypeId], references: [id])
+  leaveType   UserLeaveType  @relation(fields: [leaveTypeId], references: [id], onDelete: Cascade)
   userId      String
-  user        User           @relation(fields: [userId], references: [id])
+  user        User           @relation(fields: [userId], references: [id], onDelete: NoAction)
   approval    LeaveApproval?
   documents   String[]
   createdAt   DateTime       @default(now())
@@ -111,8 +111,8 @@ model LeaveApproval {
   id             Int          @id @default(autoincrement())
   supervisorId   String
   leaveRequestId Int          @unique
-  supervisor     User         @relation(fields: [supervisorId], references: [id])
-  leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id])
+  supervisor     User         @relation(fields: [supervisorId], references: [id], onDelete: NoAction)
+  leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
 }
 
 enum LeaveStatus {
