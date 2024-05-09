@@ -1,4 +1,9 @@
 import prisma from "./db.js";
+await prisma.leaveRequest.deleteMany({
+  where: {
+    id: 1,
+  },
+});
 
 // const leaveData = [
 //   { type: "Casual Leave", count: 10 },

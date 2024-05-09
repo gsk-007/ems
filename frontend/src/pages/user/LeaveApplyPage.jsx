@@ -81,7 +81,7 @@ const LeaveApplyPage = () => {
         StartDate,
         EndDate,
         leaveTypeId: Number(formData.leaveTypeId),
-        supervisorId: userInfo.department.superviser.id,
+        supervisorId: userInfo.department.supervisor.id,
       };
       const res = await createLeave(data);
       toast.success("Leave Applied Successfully");
@@ -146,7 +146,7 @@ const LeaveApplyPage = () => {
               <input
                 type="text"
                 name=""
-                value={userInfo.department.superviser.name}
+                value={userInfo.department.supervisor.name}
                 disabled={true}
               />
             </div>

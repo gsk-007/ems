@@ -15,7 +15,7 @@ const authUser = asyncHandler(async (req, res) => {
     include: {
       department: {
         select: {
-          superviser: {
+          supervisor: {
             select: {
               id: true,
               name: true,

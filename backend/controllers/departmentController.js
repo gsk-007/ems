@@ -10,7 +10,7 @@ const getAllDepartments = asyncHandler(async (req, res) => {
       id: true,
       name: true,
       type: true,
-      superviserId: true,
+      supervisorId: true,
     },
     orderBy: {
       id: "asc",
@@ -23,12 +23,12 @@ const getAllDepartments = asyncHandler(async (req, res) => {
 // route  POST /api/department
 // @access Private Admin
 const createDepartment = asyncHandler(async (req, res) => {
-  const { name, type, superviserId } = req.body;
+  const { name, type, supervisorId } = req.body;
   const newDepartment = await prisma.department.create({
     data: {
       name,
       type,
-      superviserId,
+      supervisorId,
     },
   });
   res.status(201).json("New Department Created");
@@ -41,13 +41,13 @@ const updateDepartment = asyncHandler(async (req, res) => {
   const { id } = req.params;
   const data = req.body;
 
-  // disconnecting the relation if department superviserId is null
-  if (data.superviserId === "null") {
-    delete data.superviserId;
+  // disconnecting the relation if department supervisorId is null
+  if (data.supervisorId === "null") {
+    delete data.supervisorId;
     await prisma.department.update({
       where: { id: Number(id) },
       data: {
-        superviser: {
+        supervisor: {
           disconnect: true,
         },
       },

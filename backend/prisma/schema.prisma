@@ -30,7 +30,7 @@ model User {
   isApproved              Boolean?        @default(false)
   department              Department?     @relation(fields: [departmentId], references: [id])
   supervisingDepartmentId Int?
-  supervisingDepartment   Department?     @relation("DepartmentSuperviser")
+  supervisingDepartment   Department?     @relation("DepartmentSupervisor")
   leaveTypes              UserLeaveType[]
   leaveRequests           LeaveRequest[]
   leaveApprovals          LeaveApproval[]
@@ -64,8 +64,8 @@ model Department {
   name         String
   type         TeachingType
   user         User[]
-  superviserId String?      @unique
-  superviser   User?        @relation("DepartmentSuperviser", fields: [superviserId], references: [id])
+  supervisorId String?      @unique
+  supervisor   User?        @relation("DepartmentSupervisor", fields: [supervisorId], references: [id])
   createdAt    DateTime     @default(now())
 }
 
@@ -93,7 +93,7 @@ model UserLeaveType {
 }
 
 model LeaveRequest {
-  id          Int            @id @default(autoincrement())
+  id          Int            @id @unique @default(autoincrement())
   StartDate   DateTime
   EndDate     DateTime
   reason      String

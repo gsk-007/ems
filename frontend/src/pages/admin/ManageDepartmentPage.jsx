@@ -20,7 +20,7 @@ const ManageDepartmentPage = () => {
   const [department, setDepartment] = useState({
     name: "",
     type: "",
-    superviserId: undefined,
+    supervisorId: undefined,
   });
   const [users, setUsers] = useState([]);
 
@@ -59,7 +59,7 @@ const ManageDepartmentPage = () => {
             .then((res) => {
               setDepartments(res);
             });
-          setDepartment({ name: "", type: "", superviserId: 0 });
+          setDepartment({ name: "", type: "", supervisorId: 0 });
         } catch (err) {
           toast.error(err?.data?.message || err.error);
         }
@@ -77,7 +77,7 @@ const ManageDepartmentPage = () => {
     // console.log(editDepartment);
     setDepartment({
       ...editDepartment,
-      superviserId: editDepartment.superviserId || 0,
+      supervisorId: editDepartment.supervisorId || 0,
     });
     setModal({
       title: "Edit Department",
@@ -88,7 +88,7 @@ const ManageDepartmentPage = () => {
             data: {
               name: item.name,
               type: item.type,
-              superviserId: item.superviserId === 0 ? null : item.superviserId,
+              supervisorId: item.supervisorId === 0 ? null : item.supervisorId,
             },
           }).unwrap();
           toast.success("Department Updated Succesfully");
@@ -97,7 +97,7 @@ const ManageDepartmentPage = () => {
             .then((res) => {
               setDepartments(res);
             });
-          setDepartment({ name: "", type: "", superviserId: 0 });
+          setDepartment({ name: "", type: "", supervisorId: 0 });
         } catch (err) {
           toast.error(err?.data?.message || err.error);
         }
@@ -229,13 +229,13 @@ const ManageDepartmentPage = () => {
                 </select>
               </div>
               <div className="mb-5">
-                <label htmlFor="superviserId" className="form-label">
-                  Superviser
+                <label htmlFor="supervisorId" className="form-label">
+                  Supervisor
                 </label>
                 <select
                   className="form-select"
-                  name="superviserId"
-                  value={department.superviserId}
+                  name="supervisorId"
+                  value={department.supervisorId}
                   onChange={handleChange}
                 >
                   <option value="null">None</option>
