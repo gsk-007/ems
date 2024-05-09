@@ -81,7 +81,7 @@ const LeaveApplyPage = () => {
         StartDate,
         EndDate,
         leaveTypeId: Number(formData.leaveTypeId),
-        supervisorId: userInfo.department.supervisor.id,
+        supervisorId: userInfo.department.supervisor.id || "",
       };
       const res = await createLeave(data);
       toast.success("Leave Applied Successfully");

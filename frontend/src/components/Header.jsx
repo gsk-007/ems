@@ -45,15 +45,17 @@ const Header = () => {
                 Home
               </Link>
             </li>
-           {userInfo.role == "ADMIN" &&  <li className="nav-item">
-              <Link
-                className="nav-link active"
-                aria-current="page"
-                to={`/admin/home`}
-              >
-                Admin Panel
-              </Link>
-            </li>}
+            {userInfo.role == "ADMIN" && (
+              <li className="nav-item">
+                <Link
+                  className="nav-link active"
+                  aria-current="page"
+                  to={`/admin/home`}
+                >
+                  Admin Panel
+                </Link>
+              </li>
+            )}
           </ul>
         </div>
         <div className="nav-item dropdown mx-6">
@@ -68,10 +70,7 @@ const Header = () => {
           </a>
           <ul className="dropdown-menu">
             <li>
-              <Link
-                to={`/${userInfo.role === "ADMIN" ? "admin" : "user"}/profile`}
-                className="dropdown-item"
-              >
+              <Link to={`/user/profile`} className="dropdown-item">
                 Profile
               </Link>
             </li>
