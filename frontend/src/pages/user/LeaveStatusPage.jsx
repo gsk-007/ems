@@ -6,6 +6,7 @@ import Spinner from "../../components/Spinner";
 const LeaveStatusPage = () => {
   const [pendingLeaves, setPendingLeaves] = useState([]);
   const [approvedLeaves, setApprovedLeaves] = useState([]);
+  const [rejectedLeaves, setRejectedLeaves] = useState([]);
   const [getUserLeaveRequests, { isLoading: userRequestsLoading }] =
     useGetUserLeaveRequestsMutation();
 
@@ -15,6 +16,7 @@ const LeaveStatusPage = () => {
       .then((res) => {
         setPendingLeaves(res.filter((item) => item.status === "PENDING"));
         setApprovedLeaves(res.filter((item) => item.status === "APPROVED"));
+        setRejectedLeaves(res.filter((item) => item.status === "REJECTED"));
       });
   }, []);
 
@@ -98,6 +100,53 @@ const LeaveStatusPage = () => {
                 {approvedLeaves.length > 0 ? (
                   <div>
                     {approvedLeaves.map((item, idx) => (
+                      <div key={idx} className="card mx-2">
+                        <div className="card-body">
+                          <h5 className="card-title">
+                            Leave{" "}
+                            <span className="badge text-bg-primary ms-3 d-inline">
+                              {item.status}
+                            </span>
+                          </h5>
+                          <p>
+                            {new Date(item.StartDate).toLocaleDateString()} -
+                            {new Date(item.EndDate).toLocaleDateString()}
+                          </p>
+                          <div>
+                            <p className="card-text"> Reason: {item.reason}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div>No leaves to display</div>
+                )}
+              </div>
+            </div>
+          </div>
+          <div className="accordion-item">
+            <h2 className="accordion-header">
+              <button
+                className="accordion-button collapsed"
+                type="button"
+                data-bs-toggle="collapse"
+                data-bs-target="#collapseThree"
+                aria-expanded="false"
+                aria-controls="collapseTHree"
+              >
+                Rejected Leaves
+              </button>
+            </h2>
+            <div
+              id="collapseThree"
+              className="accordion-collapse collapse"
+              data-bs-parent="#accordionExample"
+            >
+              <div className="accordion-body">
+                {rejectedLeaves.length > 0 ? (
+                  <div>
+                    {rejectedLeaves.map((item, idx) => (
                       <div key={idx} className="card mx-2">
                         <div className="card-body">
                           <h5 className="card-title">

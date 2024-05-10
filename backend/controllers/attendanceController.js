@@ -39,6 +39,18 @@ const getCurrentUserAttendance = asyncHandler(async (req, res) => {
   res.status(200).json(attendance);
 });
 
+// @desc  Get Today's Attendance
+// route  GET /api/attendance/:id
+// @access Private
+const getTodayAttendance = asyncHandler(async (req, res) => {
+  const attendance = await prisma.attendance.findUnique({
+    data: {
+      userId: req.user.id,
+      date: new Date(),
+    },
+  });
+  res.status(201).json(attendance);
+});
 // @desc  Create new attendance record
 // route  POST /api/attendance/:id
 // @access Private
@@ -77,5 +89,6 @@ const updateUserCurrentAttendance = asyncHandler(async (req, res) => {
 export {
   createAttendance,
   getCurrentUserAttendance,
+  getTodayAttendance,
   updateUserCurrentAttendance,
 };
