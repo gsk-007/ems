@@ -4,9 +4,7 @@ import { useGetUserLeaveRequestsMutation } from "../../slices/leaveApiSlice";
 import Spinner from "../../components/Spinner";
 
 const LeaveStatusPage = () => {
-  const [pendingLeaves, setPendingLeaves] = useState([]);
-  const [approvedLeaves, setApprovedLeaves] = useState([]);
-  const [rejectedLeaves, setRejectedLeaves] = useState([]);
+  const [leaves, setLeaves] = useState([]);
   const [getUserLeaveRequests, { isLoading: userRequestsLoading }] =
     useGetUserLeaveRequestsMutation();
 
@@ -14,9 +12,8 @@ const LeaveStatusPage = () => {
     getUserLeaveRequests()
       .unwrap()
       .then((res) => {
-        setPendingLeaves(res.filter((item) => item.status === "PENDING"));
-        setApprovedLeaves(res.filter((item) => item.status === "APPROVED"));
-        setRejectedLeaves(res.filter((item) => item.status === "REJECTED"));
+        console.log(res);
+        setLeaves(res);
       });
   }, []);
 
@@ -27,152 +24,45 @@ const LeaveStatusPage = () => {
       </div>
       {userRequestsLoading && <Spinner />}
       <div className="w-75 mx-auto">
-        <div className="accordion" id="accordionExample">
-          <div className="accordion-item">
-            <h2 className="accordion-header">
-              <button
-                className="accordion-button"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseOne"
-                aria-expanded="true"
-                aria-controls="collapseOne"
-              >
-                Pendind Leaves
-              </button>
-            </h2>
-            <div
-              id="collapseOne"
-              className="accordion-collapse collapse show"
-              data-bs-parent="#accordionExample"
-            >
-              <div className="accordion-body">
-                {pendingLeaves.length > 0 ? (
-                  <div>
-                    {pendingLeaves.map((item, idx) => (
-                      <div key={idx} className="card m-2">
-                        <div className="card-body">
-                          <h5 className="card-title">
-                            Leave{" "}
-                            <span className="badge text-bg-primary ms-3 d-inline">
-                              {item.status}
-                            </span>
-                          </h5>
-                          <p>
-                            {new Date(item.StartDate).toLocaleDateString()} -
-                            {new Date(item.EndDate).toLocaleDateString()}
-                          </p>
-                          <div>
-                            <p className="card-text"> Reason: {item.reason}</p>
-                          </div>
-                          <button className="btn btn-sm btn-outline-danger position-absolute bottom-0 end-0 me-4 mb-2">
-                            Cancel
-                          </button>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div>No leaves to display</div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="accordion-item">
-            <h2 className="accordion-header">
-              <button
-                className="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseTwo"
-                aria-expanded="false"
-                aria-controls="collapseTwo"
-              >
-                Approved Leaves
-              </button>
-            </h2>
-            <div
-              id="collapseTwo"
-              className="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
-              <div className="accordion-body">
-                {approvedLeaves.length > 0 ? (
-                  <div>
-                    {approvedLeaves.map((item, idx) => (
-                      <div key={idx} className="card mx-2">
-                        <div className="card-body">
-                          <h5 className="card-title">
-                            Leave{" "}
-                            <span className="badge text-bg-primary ms-3 d-inline">
-                              {item.status}
-                            </span>
-                          </h5>
-                          <p>
-                            {new Date(item.StartDate).toLocaleDateString()} -
-                            {new Date(item.EndDate).toLocaleDateString()}
-                          </p>
-                          <div>
-                            <p className="card-text"> Reason: {item.reason}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div>No leaves to display</div>
-                )}
-              </div>
-            </div>
-          </div>
-          <div className="accordion-item">
-            <h2 className="accordion-header">
-              <button
-                className="accordion-button collapsed"
-                type="button"
-                data-bs-toggle="collapse"
-                data-bs-target="#collapseThree"
-                aria-expanded="false"
-                aria-controls="collapseTHree"
-              >
-                Rejected Leaves
-              </button>
-            </h2>
-            <div
-              id="collapseThree"
-              className="accordion-collapse collapse"
-              data-bs-parent="#accordionExample"
-            >
-              <div className="accordion-body">
-                {rejectedLeaves.length > 0 ? (
-                  <div>
-                    {rejectedLeaves.map((item, idx) => (
-                      <div key={idx} className="card mx-2">
-                        <div className="card-body">
-                          <h5 className="card-title">
-                            Leave{" "}
-                            <span className="badge text-bg-primary ms-3 d-inline">
-                              {item.status}
-                            </span>
-                          </h5>
-                          <p>
-                            {new Date(item.StartDate).toLocaleDateString()} -
-                            {new Date(item.EndDate).toLocaleDateString()}
-                          </p>
-                          <div>
-                            <p className="card-text"> Reason: {item.reason}</p>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div>No leaves to display</div>
-                )}
-              </div>
-            </div>
-          </div>
-        </div>
+        <table className="table">
+          <thead>
+            <tr>
+              <th scope="col">Index</th>
+              <th scope="col">From</th>
+              <th scope="col">To</th>
+              <th scope="col">Status</th>
+              <th scope="col">Approved By</th>
+              <th scope="col">Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            {leaves.map((item, idx) => (
+              <tr key={idx}>
+                <td>{idx + 1}</td>
+                <td>{item.StartDate.substring(0, 10)}</td>
+                <td>{item.EndDate.substring(0, 10)}</td>
+                <td>
+                  {item.status === "PENDING" ? (
+                    <span className="badge text-bg-primary">{item.status}</span>
+                  ) : item.status === "APPROVED" ? (
+                    <span className="badge text-bg-success">{item.status}</span>
+                  ) : (
+                    <span className="badge text-bg-danger">{item.status}</span>
+                  )}
+                </td>
+                <td>{item.approval.supervisor.name}</td>
+                <td>
+                  <button
+                    className="btn btn-sm btn-outline-danger"
+                    disabled={item.status !== "PENDING"}
+                  >
+                    Cancel
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </HomePageLayout>
   );

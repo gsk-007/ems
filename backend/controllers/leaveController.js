@@ -68,6 +68,15 @@ const getUserLeaveRequests = asyncHandler(async (req, res) => {
       reason: true,
       status: true,
       documents: true,
+      approval: {
+        select: {
+          supervisor: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
   res.status(200).json(leaveRequests);
