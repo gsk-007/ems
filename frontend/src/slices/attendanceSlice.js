@@ -17,6 +17,6 @@ const attendanceSlice = createSlice({
   },
 });
 
-export const { setCredentials, logout } = attendanceSlice.actions;
+export const { setAttendance, removeAttendance } = attendanceSlice.actions;
 
 export default attendanceSlice.reducer;

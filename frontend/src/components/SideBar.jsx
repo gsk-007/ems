@@ -4,7 +4,8 @@ import { useSelector } from "react-redux";
 
 const SideBar = () => {
   const [sideBarOptions, setSideBarOptions] = useState([]);
-  const { userInfo } = useSelector((state) => state.auth);
+  const { leaveApprovals } = useSelector((state) => state.leaveApproval);
+
   const location = useLocation();
   const adminSideBarOptions = [
     {
@@ -38,7 +39,7 @@ const SideBar = () => {
     {
       title: "Leave",
       tabs:
-        userInfo.leaveApprovals && userInfo.leaveApprovals.length > 0
+        leaveApprovals && leaveApprovals.length > 0
           ? userLeaveApprovalTabs
           : userLeaveTabs,
     },
