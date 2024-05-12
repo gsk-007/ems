@@ -10,11 +10,12 @@ import {
 import { useUploadFileMutation } from "../../slices/fileUploadApiSlice";
 import Spinner from "../../components/Spinner";
 import { useNavigate } from "react-router-dom";
+import { useGetAllUsersMutation } from "../../slices/userApiSlice";
+import Select from "react-dropdown-select";
 
 const LeaveApplyPage = () => {
   const [StartDate, setStartDate] = useState(new Date());
   const [EndDate, setEndDate] = useState(new Date());
-  const [disabled, setDisabled] = useState(false);
   const [userLeaves, setUserLeaves] = useState([]);
   const [leaveCount, setLeaveCount] = useState(0);
   const [formData, setFormData] = useState({
@@ -23,32 +24,38 @@ const LeaveApplyPage = () => {
     documents: [],
   });
   const [image, setImage] = useState("");
+  const [options, setOptions] = useState([]);
+  const [applyingTo, setApplyingTo] = useState();
 
   const navigate = useNavigate();
 
   const ref = useRef();
-
   const reset = () => {
     ref.current.value = "";
   };
 
   const { userInfo } = useSelector((state) => state.auth);
+
   const [getUserLeaves, { isLoading: gettingUserLeavesLoading }] =
     useGetUserLeavesMutation();
   const [uploadFile, { isLoading: fileUploadLoading }] =
     useUploadFileMutation();
   const [createLeave, { isLoading: creatingLeaveLoading }] =
     useCreateUserLeavesMutation();
+  const [getAllUsers, { isLoading: gettingAllUsersLoading }] =
+    useGetAllUsersMutation();
+
   useEffect(() => {
-    if (userInfo.department === null) {
-      setDisabled(true);
-      toast.info("Please join a department for sending a request!");
-    }
     getUserLeaves()
       .unwrap()
       .then((res) => {
         // console.log(res);
         setUserLeaves(res);
+      });
+    getAllUsers()
+      .unwrap()
+      .then((res) => {
+        setOptions(res.filter((item) => item.id !== userInfo.id));
       });
   }, []);
 
@@ -74,6 +81,7 @@ const LeaveApplyPage = () => {
   };
 
   const handleSubmit = async (e) => {
+    // TODO: HANDLE VALIDATION
     e.preventDefault();
     try {
       const data = {
@@ -81,7 +89,7 @@ const LeaveApplyPage = () => {
         StartDate,
         EndDate,
         leaveTypeId: Number(formData.leaveTypeId),
-        supervisorId: userInfo.department.supervisor.id,
+        supervisorId: applyingTo,
       };
       await createLeave(data);
       toast.success("Leave Applied Successfully");
@@ -144,14 +152,18 @@ const LeaveApplyPage = () => {
             <label htmlFor="selectLeaveType" className="form-label">
               Applying To
             </label>
+            {gettingAllUsersLoading && <Spinner />}
             <div>
-              <input
-                type="text"
-                name=""
-                value={
-                  userInfo.department ? userInfo.department.supervisor.name : ""
-                }
-                disabled={true}
+              <Select
+                options={options}
+                labelField="name"
+                valueField="id"
+                searchable
+                searchBy="name"
+                closeOnSelect
+                onChange={(values) => {
+                  setApplyingTo(values[0].id);
+                }}
               />
             </div>
           </div>
@@ -200,11 +212,7 @@ const LeaveApplyPage = () => {
           </div>
           {creatingLeaveLoading && <Spinner />}
           <div className="d-flex align-items-center justify-content-center">
-            <button
-              type="submit"
-              className="btn btn-success me-2"
-              disabled={disabled}
-            >
+            <button type="submit" className="btn btn-success me-2">
               Submit
             </button>
             <button type="button" className="btn btn-outline-danger">

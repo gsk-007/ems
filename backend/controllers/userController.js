@@ -13,16 +13,6 @@ const authUser = asyncHandler(async (req, res) => {
       email,
     },
     include: {
-      department: {
-        select: {
-          supervisor: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
       leaveApprovals: {
         select: {
           leaveRequestId: true,
@@ -118,7 +108,7 @@ const logoutUser = asyncHandler(async (req, res) => {
 // @access Private admin
 const getAllUsers = asyncHandler(async (req, res) => {
   const { approved } = req.query;
-  if (approved && req.user.role !== "ADMIN") {
+  if (!approved && req.user.role !== "ADMIN") {
     throw new Error("Access Denied");
   }
   const users = await prisma.user.findMany({
@@ -157,16 +147,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
     },
     data: userData,
     include: {
-      department: {
-        select: {
-          supervisor: {
-            select: {
-              id: true,
-              name: true,
-            },
-          },
-        },
-      },
       leaveApprovals: {
         select: {
           leaveRequestId: true,
