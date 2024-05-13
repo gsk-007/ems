@@ -146,13 +146,6 @@ const updateUserProfile = asyncHandler(async (req, res) => {
       id: req.user.id,
     },
     data: userData,
-    include: {
-      leaveApprovals: {
-        select: {
-          leaveRequestId: true,
-        },
-      },
-    },
   });
   delete updatedUser.password;
   delete updatedUser.createdAt;

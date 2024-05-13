@@ -3,9 +3,13 @@ import HomePageLayout from "../../layouts/HomePageLayout";
 import {
   useGetUserLeaveApprovalRequestsMutation,
   useUpdateLeaveRequestMutation,
+  useUpdateUserLeaveApprovalRequestMutation,
 } from "../../slices/leaveApiSlice";
 import Spinner from "../../components/Spinner";
 import { toast } from "react-toastify";
+import Select from "react-dropdown-select";
+import { useSelector } from "react-redux";
+import { useGetAllUsersMutation } from "../../slices/userApiSlice";
 
 const LeaveRequestsPage = () => {
   const [leaveApprovals, setLeaveApprovals] = useState([]);
@@ -18,11 +22,23 @@ const LeaveRequestsPage = () => {
     reason: "",
     documents: [],
   });
+  const [options, setOptions] = useState([]);
+  const [transferLeaveData, setTransferLeaveData] = useState({
+    id: "",
+    supervisorId: "",
+  });
+
+  // Importing userInfo from state
+  const { userInfo } = useSelector((state) => state.auth);
 
   const [getUserLeaveApproval, { isLoading: userLeaveApprovalLoading }] =
     useGetUserLeaveApprovalRequestsMutation();
   const [updateLeave, { isLoading: updateLeaveRequest }] =
     useUpdateLeaveRequestMutation();
+  const [getAllUsers, { isLoading: gettingAllUsersLoading }] =
+    useGetAllUsersMutation();
+  const [updateUserLeaveApproval, { isLoading: updateLeaveApprovalLoading }] =
+    useUpdateUserLeaveApprovalRequestMutation();
 
   useEffect(() => {
     getUserLeaveApproval()
@@ -89,6 +105,27 @@ const LeaveRequestsPage = () => {
     });
   };
 
+  const handleTransferClick = (idx) => {
+    getAllUsers()
+      .unwrap()
+      .then((res) => {
+        setOptions(res.filter((item) => item.id !== userInfo.id));
+      });
+    setTransferLeaveData({ ...transferLeaveData, id: leaveApprovals[idx].id });
+  };
+
+  const handleTransferLeaveModalSave = async () => {
+    try {
+      await updateUserLeaveApproval(transferLeaveData);
+      toast.success("Leave Transferred Succesfully!");
+      setTransferLeaveData({ id: "", supervisorId: "" });
+      const res = await getUserLeaveApproval().unwrap();
+      setLeaveApprovals(res);
+    } catch (err) {
+      toast.error(err?.data?.message || err.error);
+    }
+  };
+
   return (
     <HomePageLayout>
       <div className="d-flex align-items-center justify-content-center">
@@ -116,11 +153,19 @@ const LeaveRequestsPage = () => {
                 <td>
                   <button
                     onClick={() => handleViewClick(idx)}
-                    className="btn btn-sm btn-outline-primary"
+                    className="btn btn-sm btn-outline-primary me-2"
                     data-bs-toggle="modal"
                     data-bs-target="#approveModal"
                   >
                     View
+                  </button>
+                  <button
+                    onClick={() => handleTransferClick(idx)}
+                    className="btn btn-sm btn-outline-danger"
+                    data-bs-toggle="modal"
+                    data-bs-target="#transferLeaveModal"
+                  >
+                    Transfer
                   </button>
                 </td>
               </tr>
@@ -128,6 +173,7 @@ const LeaveRequestsPage = () => {
           </tbody>
         </table>
       </div>
+      {/* Leave View Modal */}
       <div
         className="modal fade"
         id="approveModal"
@@ -177,6 +223,74 @@ const LeaveRequestsPage = () => {
                 data-bs-dismiss="modal"
               >
                 Reject
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      {/* Leave Transfer Modal */}
+      <div
+        className="modal fade"
+        id="transferLeaveModal"
+        tabIndex="-1"
+        aria-labelledby="transferLeaveModalLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h1 className="modal-title fs-5" id="exampleModalLabel">
+                Transfer Leave
+              </h1>
+              <button
+                type="button"
+                className="btn-close"
+                data-bs-dismiss="modal"
+                aria-label="Close"
+              ></button>
+            </div>
+            <div className="modal-body" style={{ height: "200px" }}>
+              <div className="mb-3">
+                <label htmlFor="selectLeaveType" className="form-label">
+                  Applying To
+                </label>
+                <div>
+                  <Select
+                    options={options}
+                    labelField="name"
+                    valueField="id"
+                    searchable
+                    dropdownPosition="auto"
+                    dropdownHeight="100px"
+                    loading={gettingAllUsersLoading}
+                    searchBy="name"
+                    placeholder="Search Name"
+                    closeOnSelect
+                    onChange={(values) => {
+                      setTransferLeaveData({
+                        ...transferLeaveData,
+                        supervisorId: values[0].id,
+                      });
+                    }}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-secondary"
+                data-bs-dismiss="modal"
+              >
+                Close
+              </button>
+              <button
+                type="button"
+                onClick={handleTransferLeaveModalSave}
+                data-bs-dismiss="modal"
+                className="btn btn-outline-primary"
+              >
+                Save changes
               </button>
             </div>
           </div>

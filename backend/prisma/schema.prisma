@@ -14,25 +14,25 @@ datasource db {
 }
 
 model User {
-  id                      String          @id @default(uuid())
-  createdAt               DateTime        @default(now())
-  updatedAt               DateTime        @updatedAt
-  name                    String          @default("User")
-  email                   String          @unique
-  password                String
-  phone                   String?
-  role                    Role            @default(USER)
-  qualifications          Json[]
-  publications            Json[]
-  about                   String?
-  attendance              Attendance[]
-  departmentId            Int?
-  isApproved              Boolean?        @default(false)
-  department              Department?     @relation(fields: [departmentId], references: [id], onDelete: NoAction)
-  supervisingDepartment   Department?     @relation("DepartmentSupervisor")
-  leaveTypes              UserLeaveType[]
-  leaveRequests           LeaveRequest[]
-  leaveApprovals          LeaveApproval[]
+  id                    String          @id @default(uuid())
+  createdAt             DateTime        @default(now())
+  updatedAt             DateTime        @updatedAt
+  name                  String          @default("User")
+  email                 String          @unique
+  password              String
+  phone                 String?
+  role                  Role            @default(USER)
+  qualifications        Json[]
+  publications          Json[]
+  about                 String?
+  attendance            Attendance[]
+  departmentId          Int?
+  isApproved            Boolean?        @default(false)
+  department            Department?     @relation(fields: [departmentId], references: [id], onDelete: NoAction)
+  supervisingDepartment Department?     @relation("DepartmentSupervisor")
+  leaveTypes            UserLeaveType[]
+  leaveRequests         LeaveRequest[]
+  leaveApprovals        LeaveApproval[]
 }
 
 enum Role {
@@ -92,7 +92,7 @@ model UserLeaveType {
 }
 
 model LeaveRequest {
-  id          Int            @id  @default(autoincrement())
+  id          Int            @id @default(autoincrement())
   StartDate   DateTime       @db.Date
   EndDate     DateTime       @db.Date
   reason      String
@@ -110,7 +110,7 @@ model LeaveApproval {
   id             Int          @id @default(autoincrement())
   supervisorId   String
   leaveRequestId Int          @unique
-  supervisor     User         @relation(fields: [supervisorId], references: [id], onDelete: NoAction)
+  supervisor     User         @relation(fields: [supervisorId], references: [id], onDelete: NoAction, onUpdate: Cascade)
   leaveRequest   LeaveRequest @relation(fields: [leaveRequestId], references: [id], onDelete: Cascade)
 }
 

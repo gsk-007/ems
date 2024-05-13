@@ -3,7 +3,6 @@ import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useLoginMutation } from "../slices/userApiSlice";
 import { setCredentials } from "../slices/authSlice";
-import { setLeaveApproval } from "../slices/leaveApprovalSlice";
 import { toast } from "react-toastify";
 import Spinner from "../components/Spinner";
 
@@ -28,9 +27,7 @@ const LoginPage = () => {
     e.preventDefault();
     try {
       const res = await login({ email, password }).unwrap();
-      const { leaveApprovals, ...data } = res;
-      dispatch(setLeaveApproval(leaveApprovals));
-      dispatch(setCredentials({ ...data }));
+      dispatch(setCredentials({ ...res }));
       navigate("/user/home");
     } catch (err) {
       toast.error(err?.data?.message || err.error);

@@ -6,6 +6,7 @@ import {
   getUserLeaveRequests,
   getUserLeaves,
   updateLeaveRequestStatus,
+  updateUserApprovalRequest,
 } from "../controllers/leaveController.js";
 import { protect } from "../middleware/authMiddleware.js";
 
@@ -16,7 +17,10 @@ router
   .get(protect, getUserLeaveRequests)
   .post(protect, createLeaveRequest);
 
-router.route("/approval").get(protect, getUserApprovalRequests);
+router
+  .route("/approval")
+  .get(protect, getUserApprovalRequests)
+  .put(protect, updateUserApprovalRequest);
 router
   .route("/request/:id")
   .put(updateLeaveRequestStatus)

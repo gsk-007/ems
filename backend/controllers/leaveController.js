@@ -83,6 +83,35 @@ const getUserLeaveRequests = asyncHandler(async (req, res) => {
 });
 
 // @desc  Update  Leave Request Status
+// route  PUT /api/leave/:id
+// @access Private User
+const updateLeaveRequestStatus = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { status, newLeaveCount } = req.body;
+  const updated = await prisma.leaveRequest.update({
+    where: { id: Number(id) },
+    data: { status },
+  });
+  await prisma.userLeaveType.update({
+    where: {
+      id: updated.leaveTypeId,
+    },
+    data: { leaveCount: Number(newLeaveCount) },
+  });
+
+  res.status(200).json("Update Leave Request");
+});
+
+// @desc  Update  Leave Request Status
+// route  DELETE /api/leave/:id
+// @access Private User
+const deleteLeaveRequest = asyncHandler(async (req, res) => {
+  res.status(200).json("Update Leave Request");
+});
+
+/** Leave Approval Controllers */
+
+// @desc  Update  Leave Request Status
 // route  GET /api/leave/
 // @access Private User
 const getUserApprovalRequests = asyncHandler(async (req, res) => {
@@ -118,31 +147,18 @@ const getUserApprovalRequests = asyncHandler(async (req, res) => {
   });
   res.status(200).json(leaveApprovals);
 });
+
 // @desc  Update  Leave Request Status
 // route  PUT /api/leave/:id
 // @access Private User
-const updateLeaveRequestStatus = asyncHandler(async (req, res) => {
-  const { id } = req.params;
-  const { status, newLeaveCount } = req.body;
-  const updated = await prisma.leaveRequest.update({
+const updateUserApprovalRequest = asyncHandler(async (req, res) => {
+  const { id, supervisorId } = req.body;
+  const updated = await prisma.leaveApproval.update({
     where: { id: Number(id) },
-    data: { status },
-  });
-  await prisma.userLeaveType.update({
-    where: {
-      id: updated.leaveTypeId,
-    },
-    data: { leaveCount: Number(newLeaveCount) },
+    data: { supervisorId },
   });
 
-  res.status(200).json("Update Leave Request");
-});
-
-// @desc  Update  Leave Request Status
-// route  DELETE /api/leave/:id
-// @access Private User
-const deleteLeaveRequest = asyncHandler(async (req, res) => {
-  res.status(200).json("Update Leave Request");
+  res.status(200).json("Updated Leave Approval");
 });
 
 export {
@@ -151,5 +167,6 @@ export {
   getUserApprovalRequests,
   createLeaveRequest,
   updateLeaveRequestStatus,
+  updateUserApprovalRequest,
   deleteLeaveRequest,
 };
