@@ -9,6 +9,12 @@ export const attendanceApiSlice = apiSlice.injectEndpoints({
         method: "GET",
       }),
     }),
+    getTodayAttendance: builder.mutation({
+      query: (data) => ({
+        url: `${ATTENDANCE_URL}/today`,
+        method: "GET",
+      }),
+    }),
     createAttendance: builder.mutation({
       query: (data) => ({
         url: `${ATTENDANCE_URL}/${data.id}`,
@@ -30,4 +36,5 @@ export const {
   useGetAttendanceMutation,
   useCreateAttendanceMutation,
   useUpdateAttendanceMutation,
+  useGetTodayAttendanceMutation,
 } = attendanceApiSlice;

@@ -65,7 +65,7 @@ const createAttendance = asyncHandler(async (req, res) => {
       time_in,
     },
   });
-  res.status(201).json({ data: "Attendance Created" });
+  res.status(201).json(newAttendance);
 });
 
 // @desc  Update  attendance record

@@ -41,9 +41,8 @@ const SignInComponent = () => {
       const d = new Date().setUTCHours(0, 0, 0, 0);
       await updateAttendance({
         id: userInfo.id,
-        status: "PRESENT",
         date: new Date(d).toISOString(),
-        time_in: new Date(),
+        time_out: new Date(),
       });
       setSignIn(false);
     } catch (err) {
@@ -60,9 +59,10 @@ const SignInComponent = () => {
               Sign In
             </button>
           ) : (
-            <button className="btn btn-primary" onClick={handleSignOutClick}>
-              Sign Out
-            </button>
+            <p>Attendance Recorded</p>
+            // <button className="btn btn-primary" onClick={handleSignOutClick}>
+            //   Sign Out
+            // </button>
           )}
         </div>
       </div>
