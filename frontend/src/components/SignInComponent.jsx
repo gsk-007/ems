@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import {
   useCreateAttendanceMutation,
+  useGetTodayAttendanceMutation,
   useUpdateAttendanceMutation,
 } from "../slices/attendanceApiSlice";
 import { useSelector } from "react-redux";
@@ -15,12 +16,22 @@ const SignInComponent = () => {
     useCreateAttendanceMutation();
   const [updateAttendance, { isLoading: updateAttendanceLoading }] =
     useUpdateAttendanceMutation();
+  const [getTodayAttendance, { isLoading: todayAttendance }] =
+    useGetTodayAttendanceMutation();
 
   const { userInfo } = useSelector((state) => state.auth);
   useEffect(() => {
     if (getDay(new Date()) === 0 || getDay(new Date()) === 6) {
       setDisabled(true);
     }
+    getTodayAttendance()
+      .unwrap()
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
   const handleSignInClick = async () => {
     try {
