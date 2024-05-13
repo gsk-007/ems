@@ -1,7 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  attendance: null,
+  attendance: localStorage.getItem("attendanceInfo")
+    ? JSON.parse(localStorage.getItem("attendanceInfo"))
+    : null,
 };
 
 const attendanceSlice = createSlice({
@@ -10,9 +12,11 @@ const attendanceSlice = createSlice({
   reducers: {
     setAttendance: (state, action) => {
       state.attendance = action.payload;
+      localStorage.setItem("attendanceInfo", JSON.stringify(action.payload));
     },
     removeAttendance: (state) => {
       state.attendance = null;
+      localStorage.removeItem("attendanceInfo");
     },
   },
 });

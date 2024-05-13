@@ -133,45 +133,49 @@ const LeaveRequestsPage = () => {
       </div>
       <div className="w-75 mx-auto">
         {userLeaveApprovalLoading && <Spinner />}
-        <table className="table">
-          <thead>
-            <tr>
-              <th scope="col">Idx</th>
-              <th scope="col">Name</th>
-              <th scope="col">Leave Type</th>
-              <th scope="col">Status</th>
-              <th scope="col">Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {leaveApprovals.map((item, idx) => (
-              <tr key={idx}>
-                <th scope="row">{idx + 1}</th>
-                <td>{item.leaveRequest.user.name}</td>
-                <td>{item.leaveRequest.leaveType.leaveType.type}</td>
-                <td>{item.leaveRequest.status}</td>
-                <td>
-                  <button
-                    onClick={() => handleViewClick(idx)}
-                    className="btn btn-sm btn-outline-primary me-2"
-                    data-bs-toggle="modal"
-                    data-bs-target="#approveModal"
-                  >
-                    View
-                  </button>
-                  <button
-                    onClick={() => handleTransferClick(idx)}
-                    className="btn btn-sm btn-outline-danger"
-                    data-bs-toggle="modal"
-                    data-bs-target="#transferLeaveModal"
-                  >
-                    Transfer
-                  </button>
-                </td>
+        {leaveApprovals.length > 0 ? (
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">Idx</th>
+                <th scope="col">Name</th>
+                <th scope="col">Leave Type</th>
+                <th scope="col">Status</th>
+                <th scope="col">Action</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {leaveApprovals.map((item, idx) => (
+                <tr key={idx}>
+                  <th scope="row">{idx + 1}</th>
+                  <td>{item.leaveRequest.user.name}</td>
+                  <td>{item.leaveRequest.leaveType.leaveType.type}</td>
+                  <td>{item.leaveRequest.status}</td>
+                  <td>
+                    <button
+                      onClick={() => handleViewClick(idx)}
+                      className="btn btn-sm btn-outline-primary me-2"
+                      data-bs-toggle="modal"
+                      data-bs-target="#approveModal"
+                    >
+                      View
+                    </button>
+                    <button
+                      onClick={() => handleTransferClick(idx)}
+                      className="btn btn-sm btn-outline-danger"
+                      data-bs-toggle="modal"
+                      data-bs-target="#transferLeaveModal"
+                    >
+                      Transfer
+                    </button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        ) : (
+          <p className="text-center">No Requests To Show!</p>
+        )}
       </div>
       {/* Leave View Modal */}
       <div
