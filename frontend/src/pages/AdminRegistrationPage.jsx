@@ -4,6 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { useRegisterMutation } from "../slices/userApiSlice";
 import Spinner from "../components/Spinner";
 import { toast } from "react-toastify";
+import { isStrongPassword } from "../constants/auth";
 
 const AdminRegistrationPage = () => {
   const [email, setEmail] = useState("");
@@ -24,7 +25,11 @@ const AdminRegistrationPage = () => {
 
   const submitHandler = async (e) => {
     e.preventDefault();
-    if (password !== confirmPassword) {
+    if (!isStrongPassword.test(password)) {
+      toast.info(
+        "Password must be at least 8 characters long and contain at least one special character and numbers."
+      );
+    } else if (password !== confirmPassword) {
       toast.error("Passwords do not match");
     } else {
       try {
