@@ -4,30 +4,7 @@ import { Link } from "react-router-dom";
 
 const ProfilePage = () => {
   const { userInfo } = useSelector((state) => state.auth);
-  const qualifications = [
-    {
-      degree: "Bachelor of Science",
-      fieldOfStudy: "Computer Science",
-      university: "Example University",
-      graduationYear: 2022,
-    },
-    {
-      degree: "Master of Business Administration",
-      field_of_study: "Finance",
-      university: "Another University",
-      graduationYear: 2024,
-    },
-  ];
 
-  const samplePublication = [
-    {
-      title: "Sample Publication Title",
-      authors: ["Author 1", "Author 2"],
-      journal: "Sample Journal",
-      year: "2024",
-      url: "https://www.example.com/publication",
-    },
-  ];
   return (
     <NormalLayout>
       <div className="w-100 border border-primary py-5">
@@ -63,8 +40,8 @@ const ProfilePage = () => {
           <div className="">
             <h2>Qualifications</h2>
             <div>
-              {qualifications &&
-                qualifications.map((qualification, index) => (
+              {userInfo.qualifications &&
+                userInfo.qualifications.map((qualification, index) => (
                   <div key={index}>
                     <h4>{qualification.degree}</h4>
                     <p>
@@ -85,8 +62,8 @@ const ProfilePage = () => {
           </div>
           <div className="">
             <h2>Publications</h2>
-            {samplePublication &&
-              samplePublication.map((item, idx) => (
+            {userInfo.samplePublication &&
+              userInfo.samplePublication.map((item, idx) => (
                 <div key={idx}>
                   <h4>{item.title}</h4>
                   <p>
@@ -106,9 +83,9 @@ const ProfilePage = () => {
           <Link to="edit">
             <button className="  btn btn-primary">Edit Details</button>
           </Link>
-          <Link to="editpassword">
+          {/* <Link to="editpassword">
             <button className="ms-2  btn btn-primary">Change Password</button>
-          </Link>
+          </Link> */}
         </div>
       </div>
     </NormalLayout>

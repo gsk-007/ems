@@ -127,6 +127,9 @@ const EditProfilePage = () => {
   const handleFormSubmit = async (e) => {
     e.preventDefault();
     userData.departmentId = Number(userData.departmentId);
+    if (userData.departmentId === 0) {
+      delete userData.departmentId;
+    }
     try {
       const res = await updateUser(userData).unwrap();
       dispatch(setCredentials({ ...res }));
@@ -242,6 +245,7 @@ const EditProfilePage = () => {
                   Qualifications
                 </label>
                 <button
+                  type="button"
                   className="btn btn-success btn-sm ms-2"
                   data-bs-toggle="modal"
                   data-bs-target="#qualificationModal"
@@ -278,98 +282,6 @@ const EditProfilePage = () => {
                   </div>
                 ))}
               </div>
-
-              {/* <!-- Add Modal --> */}
-              <div
-                className="modal fade"
-                id="qualificationModal"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5" id="exampleModalLabel">
-                        Add Qualification
-                      </h1>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      <div className="mb-3">
-                        <label htmlFor="degree" className="form-label">
-                          Degree
-                        </label>
-                        <input
-                          name="degree"
-                          value={qualification.degree}
-                          onChange={handleQualificationChange}
-                          type="text"
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="fieldOfStudy" className="form-label">
-                          Field of Study
-                        </label>
-                        <input
-                          name="fieldOfStudy"
-                          value={qualification.fieldOfStudy}
-                          onChange={handleQualificationChange}
-                          type="text"
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="university" className="form-label">
-                          University
-                        </label>
-                        <input
-                          name="university"
-                          value={qualification.university}
-                          onChange={handleQualificationChange}
-                          type="text"
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="graduationYear" className="form-label">
-                          Graduation Year
-                        </label>
-                        <input
-                          name="graduationYear"
-                          value={qualification.graduationYear}
-                          onChange={handleQualificationChange}
-                          type="number"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        data-bs-dismiss="modal"
-                        onClick={addQualification}
-                      >
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
             {/* Publications Section */}
             <div className="mb-3">
@@ -378,6 +290,7 @@ const EditProfilePage = () => {
                   Publications
                 </label>
                 <button
+                  type="button"
                   className="btn btn-success btn-sm ms-2"
                   data-bs-toggle="modal"
                   data-bs-target="#publicationModal"
@@ -411,98 +324,6 @@ const EditProfilePage = () => {
                   </div>
                 ))}
               </div>
-
-              {/* <!-- Modal --> */}
-              <div
-                className="modal fade"
-                id="publicationModal"
-                tabIndex="-1"
-                aria-labelledby="exampleModalLabel"
-                aria-hidden="true"
-              >
-                <div className="modal-dialog">
-                  <div className="modal-content">
-                    <div className="modal-header">
-                      <h1 className="modal-title fs-5" id="exampleModalLabel">
-                        Add Publication Details
-                      </h1>
-                      <button
-                        type="button"
-                        className="btn-close"
-                        data-bs-dismiss="modal"
-                        aria-label="Close"
-                      ></button>
-                    </div>
-                    <div className="modal-body">
-                      <div className="mb-3">
-                        <label htmlFor="title" className="form-label">
-                          Title
-                        </label>
-                        <input
-                          name="title"
-                          value={publication.title || ""}
-                          onChange={handlePublicationChange}
-                          type="text"
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="journal" className="form-label">
-                          Journal
-                        </label>
-                        <input
-                          name="journal"
-                          value={publication.journal || ""}
-                          onChange={handlePublicationChange}
-                          type="text"
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="year" className="form-label">
-                          Year
-                        </label>
-                        <input
-                          name="year"
-                          value={publication.year || ""}
-                          onChange={handlePublicationChange}
-                          type="number"
-                          className="form-control"
-                        />
-                      </div>
-                      <div className="mb-3">
-                        <label htmlFor="url" className="form-label">
-                          Url
-                        </label>
-                        <input
-                          name="url"
-                          value={publication.url || ""}
-                          onChange={handlePublicationChange}
-                          type="text"
-                          className="form-control"
-                        />
-                      </div>
-                    </div>
-                    <div className="modal-footer">
-                      <button
-                        type="button"
-                        className="btn btn-secondary"
-                        data-bs-dismiss="modal"
-                      >
-                        Close
-                      </button>
-                      <button
-                        type="button"
-                        className="btn btn-primary"
-                        data-bs-dismiss="modal"
-                        onClick={addPublication}
-                      >
-                        Save changes
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              </div>
             </div>
           </div>
           {isLoading && <Spinner />}
@@ -512,6 +333,188 @@ const EditProfilePage = () => {
             </button>
           </div>
         </form>
+        {/* <!-- Add Modal --> */}
+        <div
+          className="modal fade"
+          id="qualificationModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">
+                  Add Qualification
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="degree" className="form-label">
+                    Degree
+                  </label>
+                  <input
+                    name="degree"
+                    value={qualification.degree}
+                    onChange={handleQualificationChange}
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="fieldOfStudy" className="form-label">
+                    Field of Study
+                  </label>
+                  <input
+                    name="fieldOfStudy"
+                    value={qualification.fieldOfStudy}
+                    onChange={handleQualificationChange}
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="university" className="form-label">
+                    University
+                  </label>
+                  <input
+                    name="university"
+                    value={qualification.university}
+                    onChange={handleQualificationChange}
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="graduationYear" className="form-label">
+                    Graduation Year
+                  </label>
+                  <input
+                    name="graduationYear"
+                    value={qualification.graduationYear}
+                    onChange={handleQualificationChange}
+                    type="number"
+                    className="form-control"
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  onClick={addQualification}
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        {/* <!-- Publications Modal --> */}
+        <div
+          className="modal fade"
+          id="publicationModal"
+          tabIndex="-1"
+          aria-labelledby="exampleModalLabel"
+          aria-hidden="true"
+        >
+          <div className="modal-dialog">
+            <div className="modal-content">
+              <div className="modal-header">
+                <h1 className="modal-title fs-5" id="exampleModalLabel">
+                  Add Publication Details
+                </h1>
+                <button
+                  type="button"
+                  className="btn-close"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                ></button>
+              </div>
+              <div className="modal-body">
+                <div className="mb-3">
+                  <label htmlFor="title" className="form-label">
+                    Title
+                  </label>
+                  <input
+                    name="title"
+                    value={publication.title || ""}
+                    onChange={handlePublicationChange}
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="journal" className="form-label">
+                    Journal
+                  </label>
+                  <input
+                    name="journal"
+                    value={publication.journal || ""}
+                    onChange={handlePublicationChange}
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="year" className="form-label">
+                    Year
+                  </label>
+                  <input
+                    name="year"
+                    value={publication.year || ""}
+                    onChange={handlePublicationChange}
+                    type="number"
+                    className="form-control"
+                  />
+                </div>
+                <div className="mb-3">
+                  <label htmlFor="url" className="form-label">
+                    Url
+                  </label>
+                  <input
+                    name="url"
+                    value={publication.url || ""}
+                    onChange={handlePublicationChange}
+                    type="text"
+                    className="form-control"
+                  />
+                </div>
+              </div>
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-secondary"
+                  data-bs-dismiss="modal"
+                >
+                  Close
+                </button>
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  onClick={addPublication}
+                >
+                  Save changes
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </NormalLayout>
   );
