@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
+import logo from "../assets/IIIT_Bh_Logo.png";
 
 const SideBar = () => {
   const [sideBarOptions, setSideBarOptions] = useState([]);
@@ -54,7 +55,9 @@ const SideBar = () => {
 
   return (
     <div className="h-100">
-      <div className="h-25 border border-primary">Top Section</div>
+      <div className="h-25  d-flex align-items-center justify-content-center">
+        <img height={100} src={logo} alt="IIIT Logo Image" />
+      </div>
 
       <div className="accordion" id="accordionExample">
         {sideBarOptions.map((item, idx) => (
