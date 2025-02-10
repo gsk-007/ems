@@ -1,4 +1,4 @@
-# Employee Management System (EMS) – IIIT Bhubaneswar  
+# Final Year Project: Employee Management System (EMS) – IIIT Bhubaneswar  
 
 ## 📌 Overview  
 The **Employee Management System (EMS)** is a comprehensive web application designed to streamline HR processes at **IIIT Bhubaneswar**. The system automates employee authentication, profile management, leave tracking, attendance, and payroll processing—eliminating inefficiencies caused by outdated manual processes.  
